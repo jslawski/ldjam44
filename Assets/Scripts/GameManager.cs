@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
 
 	public GameDifficulty currentDifficulty = GameDifficulty.Easy;
 
-	private Sequence currentSequence;
+  private Sequence currentSequence = null;
 	private Coroutine runningSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
 
@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour {
 		NeedleController.onSynapseHit -= this.SynapseHit;
 		NeedleController.onSynapseHit += this.SynapseHit;
 
-		this.gameTimer.Reset();
+    StartGame();
 	}
 
 	public void StartGame()
@@ -154,7 +154,7 @@ public class GameManager : MonoBehaviour {
 	{
 		for (int i = 0; i < this.allSynapses.Count; i++)
 		{
-			this.allSynapses[(SynapseLocation)i].Mode = sequenceToLoad.synapseModes[i];
+      this.allSynapses[(SynapseLocation) i].SetSynapseMode(sequenceToLoad.synapseModes[i]);
 		}
 		this.currentSequence = sequenceToLoad;
 		this.runningSequenceCoroutine = this.StartCoroutine(this.RunSequence());

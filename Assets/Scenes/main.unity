@@ -802,7 +802,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5210655a1e5f1774e9268858d45aa9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mode: 0
+  Mode: 3
   Illuminator: {fileID: 1183742403}
 --- !u!135 &1183742405
 SphereCollider:
@@ -913,7 +913,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5210655a1e5f1774e9268858d45aa9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mode: 1
+  Mode: 3
   Illuminator: {fileID: 1262154673}
 --- !u!135 &1262154675
 SphereCollider:
@@ -1024,7 +1024,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5210655a1e5f1774e9268858d45aa9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mode: 0
+  Mode: 3
   Illuminator: {fileID: 1313328187}
 --- !u!135 &1313328189
 SphereCollider:
@@ -1357,7 +1357,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5210655a1e5f1774e9268858d45aa9ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Mode: 1
+  Mode: 3
   Illuminator: {fileID: 1737082645}
 --- !u!135 &1737082647
 SphereCollider:
