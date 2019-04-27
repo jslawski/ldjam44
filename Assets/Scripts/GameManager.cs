@@ -7,8 +7,8 @@ public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour {
 
 	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 10;
-	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DefaultTimerInitValueInSeconds * (2.0f / 3.0f);
-	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DefaultTimerInitValueInSeconds * (1.0f / 3.0f);
+	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (2.0f / 3.0f);
+	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (1.0f / 3.0f);
 
 	static GameManager instance;
 
@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour {
 
 	[SerializeField]
 	private Timer gameTimer;
+  [SerializeField]
+  private float timerInitValueInSeconds = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS;
 
 	void Awake()
 	{
@@ -40,13 +42,15 @@ public class GameManager : MonoBehaviour {
 
 		NeedleController.onSynapseHit -= this.SynapseHit;
 		NeedleController.onSynapseHit += this.SynapseHit;
+    gameTimer.OnTimerEnded -= this.OnTimerEnded;
+    gameTimer.OnTimerEnded += this.OnTimerEnded;
 
     StartGame();
 	}
 
 	public void StartGame()
 	{
-		this.gameTimer.Reset();
+		this.gameTimer.Reset(timerInitValueInSeconds);
 		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
 	}
 
@@ -147,10 +151,10 @@ public class GameManager : MonoBehaviour {
 	{
 		//TODO: Increment score and combo here
 	}
-	#endregion
+  #endregion
 
-	#region Sequence Load Handling
-	public void LoadSequence(Sequence sequenceToLoad)
+  #region Sequence Load Handling
+  public void LoadSequence(Sequence sequenceToLoad)
 	{
 		for (int i = 0; i < this.allSynapses.Count; i++)
 		{
@@ -178,5 +182,14 @@ public class GameManager : MonoBehaviour {
 
 		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
 	}
-	#endregion
+  #endregion
+
+  #region End Game Handling
+  private void OnTimerEnded()
+  {
+    this.StopAllCoroutines();
+    Debug.Log("GAME OVER!");
+
+  }
+  #endregion
 }

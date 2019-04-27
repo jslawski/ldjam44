@@ -9,13 +9,13 @@ using UnityEngine.UI;
 public class Timer : MonoBehaviour
 {
   public delegate void TimerEndedHandler();
-  public static event TimerEndedHandler OnTimerEnded;
+  public event TimerEndedHandler OnTimerEnded;
 
-  public const float DefaultTimerInitValueInSeconds = 120.0f;
+  public const float DEFAULT_TIMER_INIT_VALUE_IN_SECONDS = 120.0f;
 
   [SerializeField]
   private Text TimerText;
-  public float TimerValueInSeconds = 0.0f;
+  public float TimerValueInSeconds { get; private set; }
   public bool IsPaused = true;
 
 	void Update ()
@@ -61,7 +61,7 @@ public class Timer : MonoBehaviour
     IsPaused = true;
   }
 
-  public void Reset(float initialTimerValueInSeconds = DefaultTimerInitValueInSeconds)
+  public void Reset(float initialTimerValueInSeconds = DEFAULT_TIMER_INIT_VALUE_IN_SECONDS)
   {
     TimerValueInSeconds = initialTimerValueInSeconds;
     IsPaused = false;

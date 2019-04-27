@@ -436,7 +436,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerText: {fileID: 470190431}
-  TimerValueInSeconds: 120
   IsPaused: 1
 --- !u!114 &470190431
 MonoBehaviour:
@@ -1482,3 +1481,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDifficulty: 0
   gameTimer: {fileID: 470190430}
+  timerInitValueInSeconds: 120

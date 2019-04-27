@@ -16,33 +16,6 @@ public class Synapse : MonoBehaviour
     Illuminator.OnSynapseModeChanged(Mode);
   }
 
-  /*
-  // TODO: Throw this shit ass test code away when you're done with it.
-  public void OnMouseDown()
-  {
-    OnTouch();
-  }
-
-  // TODO: Throw this shit ass test code away when you're done with it.
-  public void ChangeModes()
-  {
-    switch (Mode)
-    {
-      case SynapseMode.OneTimePositive:
-        SetSynapseMode(SynapseMode.OneTimeNegative);
-        break;
-      case SynapseMode.OneTimeNegative:
-        SetSynapseMode(SynapseMode.RepetitivePositive);
-        break;
-      case SynapseMode.RepetitivePositive:
-        SetSynapseMode(SynapseMode.Neutral);
-        break;
-      case SynapseMode.Neutral:
-        SetSynapseMode(SynapseMode.OneTimePositive);
-        break;
-    }
-  }
-  */
   public void HitSynapse()
   {
     // TODO: Hook this up to whatever is keeping score.
@@ -61,6 +34,7 @@ public class Synapse : MonoBehaviour
         Debug.Log("This synapse is neutral");
         break;
     }
+
     Illuminator.OnSynapseTouched(Mode);
   }
 
