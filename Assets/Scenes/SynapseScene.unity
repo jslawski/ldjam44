@@ -1038,6 +1038,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimerText: {fileID: 1238031366}
+  TimerValueInSeconds: 120
+  IsPaused: 1
 --- !u!1 &1413171771
 GameObject:
   m_ObjectHideFlags: 0
