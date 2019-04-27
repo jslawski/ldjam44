@@ -62,9 +62,9 @@ public class Timer : MonoBehaviour
     IsPaused = true;
   }
 
-  public void Reset(float InitialTimerValueInSeconds = DefaultTimerInitValueInSeconds)
+  public void Reset(float initialTimerValueInSeconds = DefaultTimerInitValueInSeconds)
   {
-    TimerValueInSeconds = InitialTimerValueInSeconds;
+    TimerValueInSeconds = initialTimerValueInSeconds;
     IsPaused = false;
   }
 }

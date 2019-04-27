@@ -2,10 +2,10 @@
 
 public class SynapseIlluminator : MonoBehaviour
 {
-  public void OnSynapseModeChanged(SynapseMode NewSynapseMode)
+  public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
     MeshRenderer renderer = GetComponent<MeshRenderer>();
-    switch (NewSynapseMode)
+    switch (newSynapseMode)
     {
       case SynapseMode.OneTimePositive:
         renderer.material = Resources.Load<Material>("Green");
@@ -22,9 +22,9 @@ public class SynapseIlluminator : MonoBehaviour
     }
   }
 
-  public void OnSynapseTouched(SynapseMode TouchedSynapseMode)
+  public void OnSynapseTouched(SynapseMode touchedSynapseMode)
   {
-    switch (TouchedSynapseMode)
+    switch (touchedSynapseMode)
     {
       case SynapseMode.OneTimePositive:
         // TODO: Add any touch effects we want.

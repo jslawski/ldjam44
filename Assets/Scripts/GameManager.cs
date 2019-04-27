@@ -1,9 +1,8 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, RightRight, RightUp, RightDown };
-
+public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour {
 
 	static GameManager instance;
