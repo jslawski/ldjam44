@@ -31,6 +31,18 @@ public class GameManager : MonoBehaviour {
   private float timerInitValueInSeconds = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS;
   [SerializeField]
   private GameObject gameOverUI;
+  /// <summary>
+  /// This game object contains the countdown text and the get ready text,
+  /// so we can disable it to disable both.
+  /// </summary>
+  [SerializeField]
+  private GameObject getReadyUI;
+  /// <summary>
+  /// Will tick down every second to give the user some time to prepare
+  /// before the game starts.
+  /// </summary>
+  [SerializeField]
+  private Text CountdownText;
 
 	[SerializeField]
 	private Text scoreText;
@@ -60,21 +72,46 @@ public class GameManager : MonoBehaviour {
     gameTimer.OnTimerEnded -= this.OnTimerEnded;
     gameTimer.OnTimerEnded += this.OnTimerEnded;
 
-    StartGame();
+    ReadyGame();
 	}
 
-	public void StartGame()
+	public void ReadyGame()
 	{
-    // TODO: Add countdown here.
+    currentSequence = null;
     currentDifficulty = GameDifficulty.Easy;
     scoreValue = 0;
     comboValue = 1;
+
+    for (int i = 0, count = allSynapses.Count; i < count; i++)
+    {
+      allSynapses[(SynapseLocation) i].SetSynapseMode(SynapseMode.Neutral);
+    }
+
     gameOverUI.SetActive(false);
+    StartCoroutine(StartCountdownToGameStart());
+  }
+
+  private IEnumerator StartCountdownToGameStart()
+  {
+    int counter = 3; // 3 second coundown
+    CountdownText.text = counter.ToString();
+    getReadyUI.SetActive(true);
+    while (counter > 0)
+    {
+      CountdownText.text = counter.ToString();
+      yield return new WaitForSeconds(1.0f);
+      counter--;
+    }
+    getReadyUI.SetActive(false);
+    StartGame();
+  }
+
+  private void StartGame()
+  {
     this.IsGameActive = true;
     this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
     this.gameTimer.Reset(timerInitValueInSeconds);
   }
-
 
 	private void Update()
 	{
@@ -234,7 +271,7 @@ public class GameManager : MonoBehaviour {
   #region Sequence Load Handling
   public void LoadSequence(Sequence sequenceToLoad)
 	{
-		for (int i = 0; i < this.allSynapses.Count; i++)
+		for (int i = 0, count = allSynapses.Count; i < count; i++)
 		{
 			this.allSynapses[(SynapseLocation) i].SetSynapseMode(sequenceToLoad.synapseModes[i]);
 		}
