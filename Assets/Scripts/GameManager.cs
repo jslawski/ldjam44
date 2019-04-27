@@ -23,15 +23,19 @@ public class GameManager : MonoBehaviour {
   private Sequence currentSequence = null;
 	private Coroutine runningSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
+  private bool IsGameActive = false;
 
 	[SerializeField]
 	private Timer gameTimer;
   [SerializeField]
   private float timerInitValueInSeconds = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS;
+  [SerializeField]
+  private GameObject gameOverUI;
 
 	[SerializeField]
 	private Text scoreText;
 	private int scoreValue = 0;
+
 	[SerializeField]
 	private Text comboText;
 	private int comboValue = 1;
@@ -61,9 +65,15 @@ public class GameManager : MonoBehaviour {
 
 	public void StartGame()
 	{
-		this.gameTimer.Reset(timerInitValueInSeconds);
-		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
-	}
+    // TODO: Add countdown here.
+    currentDifficulty = GameDifficulty.Easy;
+    scoreValue = 0;
+    comboValue = 1;
+    gameOverUI.SetActive(false);
+    this.IsGameActive = true;
+    this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+    this.gameTimer.Reset(timerInitValueInSeconds);
+  }
 
 
 	private void Update()
@@ -76,7 +86,17 @@ public class GameManager : MonoBehaviour {
 		{
 			this.currentDifficulty = GameDifficulty.Hard;
 		}
-	}
+
+    this.scoreText.text = this.scoreValue.ToString();
+    if (this.comboValue == 0)
+    {
+      this.comboText.text = string.Empty;
+    }
+    else
+    {
+      this.comboText.text = "Combo: x" + this.comboValue.ToString();
+    }
+  }
 
 	#region Difficulty Level Handling
 	private bool IsSequenceCleared()
@@ -121,30 +141,33 @@ public class GameManager : MonoBehaviour {
 	private void ScorePositiveHit()
 	{
 		this.scoreValue += (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
-		this.scoreText.text = this.scoreValue.ToString();
 		this.comboValue++;
-		this.comboText.text = "Combo: x" + this.comboValue.ToString();
 	}
 
 	private void ScoreNegativeHit()
 	{
 		int decrementAmount = Mathf.RoundToInt((GameManager.SCORE_DECREMENT_PERCENTAGE) * this.scoreValue);
 		this.scoreValue -= decrementAmount;
-		this.scoreText.text = this.scoreValue.ToString();
 		this.comboValue = 0;
-		this.comboText.text = string.Empty;
 	}
 
 	private void ScoreNeutralHit()
 	{
 		this.comboValue = 0;
-		this.comboText.text = string.Empty;
 	}
 	#endregion
 
 	#region Synapse Hit Handling
 	private void SynapseHit(SynapseLocation hitSynapse)
 	{
+    if (IsGameActive == false)
+    {
+      // We want the player to be able to move the needles
+      // around when the game is over but don't want to
+      // process those hits.
+      return;
+    }
+
 		Debug.Log(hitSynapse + " Hit!");
 		this.allSynapses[hitSynapse].HitSynapse();
 
@@ -242,9 +265,9 @@ public class GameManager : MonoBehaviour {
   #region End Game Handling
   private void OnTimerEnded()
   {
+    this.IsGameActive = false;
     this.StopAllCoroutines();
-    Debug.Log("GAME OVER!");
-
+    gameOverUI.SetActive(true);
   }
   #endregion
 }
