@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, RightRight, RightUp, RightDown };
 public enum GameDifficulty {  Easy, Medium, Hard };
@@ -9,6 +10,9 @@ public class GameManager : MonoBehaviour {
 	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 10;
 	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (2.0f / 3.0f);
 	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (1.0f / 3.0f);
+
+	private const int SCORE_INCREMENT_VALUE = 50;
+	private const float SCORE_DECREMENT_PERCENTAGE = 0.3f;
 
 	static GameManager instance;
 
@@ -24,6 +28,13 @@ public class GameManager : MonoBehaviour {
 	private Timer gameTimer;
   [SerializeField]
   private float timerInitValueInSeconds = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS;
+
+	[SerializeField]
+	private Text scoreText;
+	private int scoreValue = 0;
+	[SerializeField]
+	private Text comboText;
+	private int comboValue = 1;
 
 	void Awake()
 	{
@@ -81,6 +92,19 @@ public class GameManager : MonoBehaviour {
 		return true;
 	}
 
+	private bool DoesSequenceHaveRepetitivePositive()
+	{
+		for (int i = 0; i < this.allSynapses.Count; i++)
+		{
+			if (this.allSynapses[(SynapseLocation)i].Mode == SynapseMode.RepetitivePositive)
+			{
+				return true;
+			}
+		}
+
+		return false;
+	}
+
 	private void AddConsecutiveSequenceClear()
 	{
 		this.consecutiveClearedSequences++;
@@ -93,6 +117,31 @@ public class GameManager : MonoBehaviour {
 	}
 	#endregion
 
+	#region Score Handling
+	private void ScorePositiveHit()
+	{
+		this.scoreValue += (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
+		this.scoreText.text = this.scoreValue.ToString();
+		this.comboValue++;
+		this.comboText.text = "Combo: x" + this.comboValue.ToString();
+	}
+
+	private void ScoreNegativeHit()
+	{
+		int decrementAmount = Mathf.RoundToInt((GameManager.SCORE_DECREMENT_PERCENTAGE) * this.scoreValue);
+		this.scoreValue -= decrementAmount;
+		this.scoreText.text = this.scoreValue.ToString();
+		this.comboValue = 0;
+		this.comboText.text = string.Empty;
+	}
+
+	private void ScoreNeutralHit()
+	{
+		this.comboValue = 0;
+		this.comboText.text = string.Empty;
+	}
+	#endregion
+
 	#region Synapse Hit Handling
 	private void SynapseHit(SynapseLocation hitSynapse)
 	{
@@ -102,39 +151,45 @@ public class GameManager : MonoBehaviour {
 		switch (this.allSynapses[hitSynapse].Mode)
 		{
 			case SynapseMode.OneTimePositive:
-				this.OneTimePositiveHit();
+				this.OneTimePositiveHit(hitSynapse);
 				break;
 			case SynapseMode.OneTimeNegative:
-				this.OneTimeNegativeHit();
+				this.OneTimeNegativeHit(hitSynapse);
 				break;
 			case SynapseMode.Neutral:
-				this.NeutralHit();
+				this.NeutralHit(hitSynapse);
 				break;
 			case SynapseMode.RepetitivePositive:
-				this.RepetitivePositiveHit();
+				this.RepetitivePositiveHit(hitSynapse);
 				break;
 			default:
 				Debug.LogError("GameManager.SynapseHit: Unknown synapse mode");
 				break;
 		}
+
+		this.allSynapses[hitSynapse].HitSynapse();
 	}
 
-	private void OneTimePositiveHit()
+	private void OneTimePositiveHit(SynapseLocation synapseLocation)
 	{
-		//TODO: Increment score and combo here...
+		this.ScorePositiveHit();
 
-		//Check sequence clear
+		this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
+
 		if (this.IsSequenceCleared())
 		{
 			this.AddConsecutiveSequenceClear();
-			StopCoroutine(this.runningSequenceCoroutine);
-			this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+			if (this.DoesSequenceHaveRepetitivePositive() == false)
+			{
+				StopCoroutine(this.runningSequenceCoroutine);
+				this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+			}
 		}
 	}
 
-	private void OneTimeNegativeHit()
+	private void OneTimeNegativeHit(SynapseLocation synapseLocation)
 	{
-		//TODO: Decrement score and clear combo
+		this.ScoreNegativeHit();
 
 		this.consecutiveClearedSequences = 0;
 
@@ -142,14 +197,14 @@ public class GameManager : MonoBehaviour {
 		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
 	}
 
-	private void NeutralHit()
+	private void NeutralHit(SynapseLocation synapseLocation)
 	{
-		//TODO: Clear combo here
+		this.ScoreNeutralHit();
 	}
 
-	private void RepetitivePositiveHit()
+	private void RepetitivePositiveHit(SynapseLocation synapseLocation)
 	{
-		//TODO: Increment score and combo here
+		this.ScorePositiveHit();
 	}
   #endregion
 
@@ -158,7 +213,7 @@ public class GameManager : MonoBehaviour {
 	{
 		for (int i = 0; i < this.allSynapses.Count; i++)
 		{
-      this.allSynapses[(SynapseLocation) i].SetSynapseMode(sequenceToLoad.synapseModes[i]);
+			this.allSynapses[(SynapseLocation) i].SetSynapseMode(sequenceToLoad.synapseModes[i]);
 		}
 		this.currentSequence = sequenceToLoad;
 		this.runningSequenceCoroutine = this.StartCoroutine(this.RunSequence());

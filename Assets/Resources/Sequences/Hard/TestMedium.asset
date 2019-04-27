@@ -11,5 +11,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a64fbeb9f9a51dd459612ff9451d2546, type: 3}
   m_Name: TestMedium
   m_EditorClassIdentifier: 
-  synapseModes: 
+  synapseModes: 0200000001000000010000000100000001000000020000000100000001000000
   sequenceDurationInSeconds: 3

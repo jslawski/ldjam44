@@ -18,23 +18,6 @@ public class Synapse : MonoBehaviour
 
   public void HitSynapse()
   {
-    // TODO: Hook this up to whatever is keeping score.
-    switch (Mode)
-    {
-      case SynapseMode.OneTimePositive:
-        Debug.Log("This synapse is one time positive");
-        break;
-      case SynapseMode.OneTimeNegative:
-        Debug.Log("This synapse is one time negative");
-        break;
-      case SynapseMode.RepetitivePositive:
-        Debug.Log("This synapse is repetitive positive");
-        break;
-      case SynapseMode.Neutral:
-        Debug.Log("This synapse is neutral");
-        break;
-    }
-
     Illuminator.OnSynapseTouched(Mode);
   }
 
