@@ -6,6 +6,6 @@ using UnityEngine;
 public class Sequence : ScriptableObject {
 
 	//NOTE: ALL SYNAPSES MUST BE ORDERED IN THE SAME ORDER AS THE SYNAPSELOCATION ENUM!
-	public List<SynapseMode> synapses;
+	public List<SynapseMode> synapseModes;
 	public float sequenceDurationInSeconds;
 }
