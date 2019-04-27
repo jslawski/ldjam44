@@ -66,4 +66,9 @@ public class Timer : MonoBehaviour
     TimerValueInSeconds = initialTimerValueInSeconds;
     IsPaused = false;
   }
+
+  public void ReduceTimerBy(float seconds)
+  {
+    TimerValueInSeconds -= seconds;
+  }
 }
