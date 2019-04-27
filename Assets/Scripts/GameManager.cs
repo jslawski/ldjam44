@@ -9,6 +9,8 @@ public class GameManager : MonoBehaviour {
 
 	public Dictionary<SynapseLocation, Synapse> allSynapses;
 
+	public GameDifficulty currentDifficulty = GameDifficulty.Easy;
+
 	void Awake()
 	{
 		instance = this;
