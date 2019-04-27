@@ -15,8 +15,7 @@ public class Timer : MonoBehaviour
 
   [SerializeField]
   private Text TimerText;
-  [SerializeField]
-  private float TimerValueInSeconds = 0.0f;
+  public float TimerValueInSeconds = 0.0f;
   public bool IsPaused = true;
 
 	void Update ()
