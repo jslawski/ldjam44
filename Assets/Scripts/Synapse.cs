@@ -43,7 +43,7 @@ public class Synapse : MonoBehaviour
     }
   }
   */
-  public void OnTouch()
+  public void HitSynapse()
   {
     // TODO: Hook this up to whatever is keeping score.
     switch (Mode)
