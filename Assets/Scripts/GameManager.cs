@@ -8,7 +8,7 @@ public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, 
 public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour {
 
-	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 10;
+	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 15;
 	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (2.0f / 3.0f);
 	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (1.0f / 3.0f);
 
@@ -81,7 +81,8 @@ public class GameManager : MonoBehaviour {
 
 	public void ReadyGame()
 	{
-    currentSequence = null;
+		this.gameTimer.SetTime();
+		currentSequence = null;
     currentDifficulty = GameDifficulty.Easy;
     scoreValue = 0;
     comboValue = 1;

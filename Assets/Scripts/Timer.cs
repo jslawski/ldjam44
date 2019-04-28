@@ -61,6 +61,11 @@ public class Timer : MonoBehaviour
     IsPaused = true;
   }
 
+	public void SetTime(float intervalTimerValueInSeconds = DEFAULT_TIMER_INIT_VALUE_IN_SECONDS)
+	{
+		TimerValueInSeconds = intervalTimerValueInSeconds;
+	}
+
   public void Reset(float initialTimerValueInSeconds = DEFAULT_TIMER_INIT_VALUE_IN_SECONDS)
   {
     TimerValueInSeconds = initialTimerValueInSeconds;
