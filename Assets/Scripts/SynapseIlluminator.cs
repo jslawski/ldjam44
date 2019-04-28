@@ -4,6 +4,10 @@ using UnityEngine;
 public class SynapseIlluminator : MonoBehaviour
 {
   private float flashOnDurationInSeconds = 0.1f;
+  [SerializeField]
+  private ParticleSystem PositiveParticleEffect;
+  [SerializeField]
+  private ParticleSystem NegativeParticleEffect;
 
   public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
