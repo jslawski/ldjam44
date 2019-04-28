@@ -199,38 +199,63 @@ public class GameManager : MonoBehaviour
 	#endregion
 
 	#region Synapse Hit Handling
-	private void SynapseHit(SynapseLocation hitSynapse)
+	private void SynapseHit(SynapseLocation synapseHitLocation)
 	{
-    if (IsGameActive == false)
+    if (IsGameActive)
     {
-      // We want the player to be able to move the needles
-      // around when the game is over but don't want to
-      // process those hits.
-      return;
+      ProcessSynapseHit(synapseHitLocation);
     }
+    // Display the hit effects all the time, even on game over.
+    DisplaySynapseHitEffect(synapseHitLocation);
+	}
 
-    Synapse synapseObject = this.allSynapses[hitSynapse];
+  private void ProcessSynapseHit(SynapseLocation synapseHitLocation)
+  {
+    Synapse synapseObject = this.allSynapses[synapseHitLocation];
     synapseObject.HitSynapse();
 
-    switch (this.allSynapses[hitSynapse].Mode)
-		{
-			case SynapseMode.OneTimePositive:
-				this.OneTimePositiveHit(hitSynapse);
-				break;
-			case SynapseMode.OneTimeNegative:
-				this.OneTimeNegativeHit(hitSynapse);
-				break;
-			case SynapseMode.Neutral:
-				this.NeutralHit(hitSynapse);
-				break;
-			case SynapseMode.RepetitivePositive:
-				this.RepetitivePositiveHit(hitSynapse);
-				break;
-			default:
-				Debug.LogError("GameManager.SynapseHit: Unknown synapse mode");
-				break;
-		}
-	}
+    switch (synapseObject.Mode)
+    {
+      case SynapseMode.OneTimePositive:
+        this.ProcessOneTimePositiveHit(synapseHitLocation);
+        break;
+      case SynapseMode.OneTimeNegative:
+        this.ProcessOneTimeNegativeHit(synapseHitLocation);
+        break;
+      case SynapseMode.Neutral:
+        this.ProcessNeutralHit(synapseHitLocation);
+        break;
+      case SynapseMode.RepetitivePositive:
+        this.ProcessRepetitivePositiveHit(synapseHitLocation);
+        break;
+      default:
+        Debug.LogError("GameManager.ProcessSynapseHit: Unknown synapse mode");
+        break;
+    }
+  }
+
+  private void DisplaySynapseHitEffect(SynapseLocation synapseHitLocation)
+  {
+    Synapse synapseObject = this.allSynapses[synapseHitLocation];
+    switch (synapseObject.Mode)
+    {
+      case SynapseMode.OneTimePositive:
+        this.DisplayOneTimePositiveHitEffect(synapseHitLocation);
+        break;
+      case SynapseMode.OneTimeNegative:
+        this.DisplayOneTimeNegativeHitEffect(synapseHitLocation);
+        break;
+      case SynapseMode.Neutral:
+        this.DisplayNeutralHitEffect(synapseHitLocation);
+        break;
+      case SynapseMode.RepetitivePositive:
+        this.DisplayRepetitivePositiveHitEffect(synapseHitLocation);
+        break;
+      default:
+        Debug.LogError("GameManager.DisplaySynapseHitEffect: Unknown synapse mode");
+        break;
+    }
+  }
 
 	private IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
 	{
@@ -248,49 +273,65 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void OneTimePositiveHit(SynapseLocation synapseLocation)
+	private void ProcessOneTimePositiveHit(SynapseLocation synapseLocation)
 	{
-		this.ScorePositiveHit();
-		this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
-		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
-		if (this.IsSequenceCleared())
-		{
-			this.AddConsecutiveSequenceClear();
+    this.ScorePositiveHit();
+    this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
+
+    if (this.IsSequenceCleared())
+    {
+      this.AddConsecutiveSequenceClear();
       if (this.DoesSequenceHaveRepetitivePositive() == false)
       {
         if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
         if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
         this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
-			}
-		}
+      }
+    }
 	}
 
-	private void OneTimeNegativeHit(SynapseLocation synapseLocation)
-	{
-		this.ScoreNegativeHit();
-		this.consecutiveClearedSequences = 0;
-		CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
-		Synapse synapseObject = this.allSynapses[synapseLocation];
-		float screenSpaceX = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).x;
-		float screenSpaceY = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).y;
-		StartCoroutine(this.ShockWaveEffect(screenSpaceX, screenSpaceY));
+  private void DisplayOneTimePositiveHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
+  }
 
+  private void ProcessOneTimeNegativeHit(SynapseLocation synapseLocation)
+	{
+		this.consecutiveClearedSequences = 0;
+    this.ScoreNegativeHit();
     if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
     if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
     this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
 	}
 
-	private void NeutralHit(SynapseLocation synapseLocation)
+  private void DisplayOneTimeNegativeHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
+    Synapse synapseObject = this.allSynapses[synapseLocation];
+    float screenSpaceX = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).x;
+    float screenSpaceY = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).y;
+    StartCoroutine(this.ShockWaveEffect(screenSpaceX, screenSpaceY));
+  }
+
+	private void ProcessNeutralHit(SynapseLocation synapseLocation)
 	{
-		CameraShaker.Instance.ShakeOnce(4f, 1f, 0.3f, 0.3f);
-		this.ScoreNeutralHit();
+    this.ScoreNeutralHit();
 	}
 
-	private void RepetitivePositiveHit(SynapseLocation synapseLocation)
+  private void DisplayNeutralHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(4f, 1f, 0.3f, 0.3f);
+  }
+
+  private void ProcessRepetitivePositiveHit(SynapseLocation synapseLocation)
 	{
-		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
-		this.ScorePositiveHit();
+    this.ScorePositiveHit();
 	}
+
+  private void DisplayRepetitivePositiveHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
+  }
   #endregion
 
   #region Sequence Load Handling
@@ -340,8 +381,11 @@ public class GameManager : MonoBehaviour
     this.StopAllCoroutines();
     for (int i = 0, count = allSynapses.Count; i < count; i++)
     {
-      allSynapses[(SynapseLocation) i].StopAllCoroutines();
+      Synapse synapse = allSynapses[(SynapseLocation) i];
+      synapse.StopAllCoroutines();
+      synapse.SetSynapseMode(SynapseMode.OneTimeNegative);
     }
+
     gameOverUI.SetActive(true);
   }
   #endregion
