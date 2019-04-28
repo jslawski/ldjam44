@@ -9,8 +9,8 @@ public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour
 {
 	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 15;
-	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (2.0f / 3.0f);
-	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (1.0f / 3.0f);
+  private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS* (2.0f / 3.0f);
+	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS* (1.0f / 3.0f);
 
   // Multiplies with the combo value to increment the current score which is a long.
 	private const int SCORE_INCREMENT_VALUE = 50;
@@ -30,8 +30,7 @@ public class GameManager : MonoBehaviour
   private bool IsGameActive = false;
 	[SerializeField]
 	private Timer gameTimer;
-  [SerializeField]
-  private float timerInitValueInSeconds = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS;
+
   [SerializeField]
   private GameObject gameOverUI;
   /// <summary>
@@ -117,7 +116,7 @@ public class GameManager : MonoBehaviour
   #region Start Game Sequence
   public void ReadyGame()
 	{
-		this.gameTimer.SetTime(timerInitValueInSeconds);
+		this.gameTimer.SetTime(Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS);
 		currentSequence = null;
     currentDifficulty = GameDifficulty.Easy;
     scoreValue = 0;
@@ -151,7 +150,7 @@ public class GameManager : MonoBehaviour
   {
     this.IsGameActive = true;
     this.LoadSequence();
-    this.gameTimer.Reset(timerInitValueInSeconds);
+    this.gameTimer.Reset(Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS);
   }
 
   #endregion
