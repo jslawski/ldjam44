@@ -15,13 +15,13 @@ public class GameManager : MonoBehaviour {
 	private const int SCORE_INCREMENT_VALUE = 50;
 	private const float SCORE_DECREMENT_PERCENTAGE = 0.3f;
 
-	static GameManager instance;
+	public static GameManager instance;
 
 	public Dictionary<SynapseLocation, Synapse> allSynapses;
 
 	public GameDifficulty currentDifficulty = GameDifficulty.Easy;
 
-  private Sequence currentSequence = null;
+  public Sequence currentSequence = null;
 	private Coroutine runningSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
   private bool IsGameActive = false;
@@ -62,7 +62,7 @@ public class GameManager : MonoBehaviour {
 
 		this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
 
-		GameObject synapsesParent = GameObject.Find("Synapses");
+		GameObject synapsesParent = GameObject.Find("NewSynapses");
 		Synapse[] synapses = synapsesParent.GetComponentsInChildren<Synapse>();
 
 		//NOTE: THIS ASSUMES THAT THE SYNAPSES IN THE SCENE HIERARCHY MATCH THE ORDER OF THE SYNAPSELOCATION ENUM!

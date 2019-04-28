@@ -1,23 +1,28 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 
 public class SynapseIlluminator : MonoBehaviour
 {
+  private float flashOnDurationInSeconds = 0.1f;
+
   public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
+    StopAllCoroutines();
+
     MeshRenderer renderer = GetComponent<MeshRenderer>();
     switch (newSynapseMode)
     {
       case SynapseMode.OneTimePositive:
-        renderer.material = Resources.Load<Material>("Green");
+        renderer.material = Resources.Load<Material>("BlueSynapse");
         break;
       case SynapseMode.OneTimeNegative:
-        renderer.material = Resources.Load<Material>("Red");
+        renderer.material = Resources.Load<Material>("RedSynapse");
         break;
       case SynapseMode.RepetitivePositive:
-        renderer.material = Resources.Load<Material>("Blue");
+        StartCoroutine(this.BlinkSynapse());
         break;
       case SynapseMode.Neutral:
-        renderer.material = Resources.Load<Material>("White");
+        renderer.material = Resources.Load<Material>("SynapseBase");
         break;
     }
   }
@@ -39,5 +44,21 @@ public class SynapseIlluminator : MonoBehaviour
         // TODO: Add any touch effects we want.
         break;
     }
+  }
+
+  private IEnumerator BlinkSynapse()
+  {
+    MeshRenderer renderer = GetComponent<MeshRenderer>();
+    float offDuration = 0.0f;
+    for (float i = 0; i < GameManager.instance.currentSequence.sequenceDurationInSeconds; i += Time.deltaTime + flashOnDurationInSeconds + offDuration)
+    {
+      offDuration = ((GameManager.instance.currentSequence.sequenceDurationInSeconds - i) / 10.0f);
+
+      renderer.material = Resources.Load<Material>("BlueSynapse");
+      yield return new WaitForSeconds(this.flashOnDurationInSeconds);
+      renderer.material = Resources.Load<Material>("SynapseBase");
+      yield return new WaitForSeconds(offDuration);
+    }
+
   }
 }
