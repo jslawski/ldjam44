@@ -9732,6 +9732,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
   m_IsPrefabAsset: 0
@@ -28827,6 +28831,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
   m_IsPrefabAsset: 0
@@ -43594,6 +43602,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
   m_IsPrefabAsset: 0
@@ -48778,6 +48790,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
   m_IsPrefabAsset: 0
@@ -53463,6 +53479,10 @@ Prefab:
     - target: {fileID: 400000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
@@ -63313,6 +63333,10 @@ Prefab:
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
   m_IsPrefabAsset: 0
@@ -73094,7 +73118,7 @@ MonoBehaviour:
   currentDifficulty: 0
   currentSequence: {fileID: 0}
   gameTimer: {fileID: 147634543}
-  timerInitValueInSeconds: 300
+  timerInitValueInSeconds: 60
   gameOverUI: {fileID: 2065551195}
   getReadyUI: {fileID: 1941727372}
   CountdownText: {fileID: 508377557}
@@ -73200,6 +73224,10 @@ Prefab:
     - target: {fileID: 400000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
@@ -77886,6 +77914,10 @@ Prefab:
     - target: {fileID: 400000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
       value: 190
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 4294967295
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4536b6cf447867c408425636e25bef08, type: 3}

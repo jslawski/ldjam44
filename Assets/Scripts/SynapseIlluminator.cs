@@ -54,7 +54,7 @@ public class SynapseIlluminator : MonoBehaviour
     {
       offDuration = ((GameManager.instance.currentSequence.sequenceDurationInSeconds - i) / 10.0f);
 
-      renderer.material = Resources.Load<Material>("BlueSynapse");
+      renderer.material = Resources.Load<Material>("BlinkingSynapse");
       yield return new WaitForSeconds(this.flashOnDurationInSeconds);
       renderer.material = Resources.Load<Material>("SynapseBase");
       yield return new WaitForSeconds(offDuration);
