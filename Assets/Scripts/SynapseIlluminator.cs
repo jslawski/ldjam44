@@ -8,10 +8,14 @@ public class SynapseIlluminator : MonoBehaviour
   private ParticleSystem PositiveParticleEffect;
   [SerializeField]
   private ParticleSystem NegativeParticleEffect;
+  [SerializeField]
+  private ParticleSystem ElectricParticleEffect;
 
   public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
     StopAllCoroutines();
+
+    this.ElectricParticleEffect.Stop();
 
     MeshRenderer renderer = GetComponent<MeshRenderer>();
     switch (newSynapseMode)
@@ -32,6 +36,8 @@ public class SynapseIlluminator : MonoBehaviour
         StartCoroutine(this.BlinkSynapseTutorial());
         break;
     }
+
+    this.TurnOnElectricParticles(newSynapseMode);
   }
 
   public void OnSynapseTouched(SynapseMode touchedSynapseMode)
@@ -49,8 +55,45 @@ public class SynapseIlluminator : MonoBehaviour
         break;
       case SynapseMode.Neutral:
         // TODO: Add any touch effects we want.
+        ElectricParticleEffect.Stop();
         break;
     }
+  }
+
+  private void TurnOnElectricParticles(SynapseMode newSynapseMode)
+  {
+    Gradient newGradient = new Gradient();
+
+    switch (newSynapseMode)
+    {
+      case SynapseMode.OneTimePositive:
+        newGradient.SetKeys(new GradientColorKey[] { new GradientColorKey(new Color32(0xFF, 0xFF, 0xFF, 0xFF), 0.0f),
+          new GradientColorKey(new Color32(0x00, 0xB8, 0xE2, 0xFF), 1.0f) },
+          new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
+        break;
+      case SynapseMode.OneTimeNegative:
+        newGradient.SetKeys(new GradientColorKey[] { new GradientColorKey(new Color32(0xFF, 0xFF, 0xFF, 0xFF), 0.0f),
+          new GradientColorKey(new Color32(0xFF, 0x36, 0x36, 0xFF), 1.0f) }, 
+          new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
+        break;
+      case SynapseMode.RepetitivePositive:
+        newGradient.SetKeys(new GradientColorKey[] { new GradientColorKey(new Color32(0xFF, 0xFF, 0xFF, 0xFF), 0.0f),
+          new GradientColorKey(new Color32(0x00, 0xB8, 0xE2, 0xFF), 1.0f) },
+          new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
+        break;
+      case SynapseMode.Neutral:
+        return;
+        break;
+      case SynapseMode.RepetitivePositiveTutorial:
+        newGradient.SetKeys(new GradientColorKey[] { new GradientColorKey(new Color32(0xFF, 0xFF, 0xFF, 0xFF), 0.0f),
+          new GradientColorKey(new Color32(0x00, 0xB8, 0xE2, 0xFF), 1.0f) },
+          new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
+        break;
+    }
+
+    ParticleSystem.ColorOverLifetimeModule particleColor = this.ElectricParticleEffect.colorOverLifetime;
+    particleColor.color = newGradient;
+    this.ElectricParticleEffect.Play();
   }
 
   private IEnumerator BlinkSynapse()

@@ -26,6 +26,6 @@ public class VideoManager : MonoBehaviour {
 
   private void LoadGameScene(VideoPlayer source)
   {
-    SceneManager.LoadScene("main");
+    SceneManager.LoadScene("TutorialScene");
   }
 }
