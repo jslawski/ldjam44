@@ -6,10 +6,10 @@ Material:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Shockwave
-  m_Shader: {fileID: 4800000, guid: 62054f891ebe8694189b04705be222dd, type: 3}
-  m_ShaderKeywords: 
-  m_LightmapFlags: 4
+  m_Name: Needle
+  m_Shader: {fileID: 47, guid: 0000000000000000f000000000000000, type: 0}
+  m_ShaderKeywords: _EMISSION _METALLICGLOSSMAP _NORMALMAP _SPECGLOSSMAP
+  m_LightmapFlags: 2
   m_EnableInstancingVariants: 0
   m_DoubleSidedGI: 0
   m_CustomRenderQueue: -1
@@ -19,7 +19,7 @@ Material:
     serializedVersion: 3
     m_TexEnvs:
     - _BumpMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 6ccd4979100bcce438b55c257e8ea52a, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _DetailAlbedoMap:
@@ -39,11 +39,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: d98c53ae65d49ee49b85c22230238289, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 025d3c22aa825db44afe2a847fb28a8d, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _OcclusionMap:
@@ -54,32 +54,27 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - _SpecGlossMap:
+        m_Texture: {fileID: 2800000, guid: 23f2026ed5f1feb4da7b8b48f86f2262, type: 3}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _CenterX: 0.8192493
-    - _CenterY: -0.420507
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
-    - _DisplacementAmount: 1
     - _DstBlend: 0
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
-    - _Hardness: 1
-    - _Invert: -0.09
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Radius: 2
-    - _SizeX: 1
-    - _SizeY: 1
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
-    - _Thickness: 0.05
     - _UVSec: 0
     - _ZWrite: 1
     m_Colors:
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
+    - _EmissionColor: {r: 0.19651122, g: 0.39269432, b: 0.6037736, a: 1}
