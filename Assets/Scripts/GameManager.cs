@@ -348,6 +348,10 @@ public class GameManager : MonoBehaviour
   {
     this.IsGameActive = false;
     this.StopAllCoroutines();
+    for (int i = 0, count = allSynapses.Count; i < count; i++)
+    {
+      allSynapses[(SynapseLocation) i].StopAllCoroutines();
+    }
     gameOverUI.SetActive(true);
   }
   #endregion
