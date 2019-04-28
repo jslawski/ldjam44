@@ -6,26 +6,28 @@ using EZCameraShake;
 
 public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, RightRight, RightUp, RightDown };
 public enum GameDifficulty {  Easy, Medium, Hard };
-public class GameManager : MonoBehaviour {
-
+public class GameManager : MonoBehaviour
+{
 	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 15;
 	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (2.0f / 3.0f);
 	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (1.0f / 3.0f);
 
+  // Multiplies with the combo value to increment the current score which is a long.
 	private const int SCORE_INCREMENT_VALUE = 50;
-	private const float SCORE_DECREMENT_PERCENTAGE = 0.3f;
+  // Determines how much to decrement the score, which is a long, by.
+  // 3 means decrement the score by a third.
+	private const long SCORE_DECREMENT_DIVISOR = 3;
 
 	public static GameManager instance;
 
 	public Dictionary<SynapseLocation, Synapse> allSynapses;
-
 	public GameDifficulty currentDifficulty = GameDifficulty.Easy;
-
   public Sequence currentSequence = null;
+
 	private Coroutine runningSequenceCoroutine;
+  private Coroutine currentLoadNextSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
   private bool IsGameActive = false;
-
 	[SerializeField]
 	private Timer gameTimer;
   [SerializeField]
@@ -44,19 +46,17 @@ public class GameManager : MonoBehaviour {
   /// </summary>
   [SerializeField]
   private Text CountdownText;
-
 	[SerializeField]
 	private Text scoreText;
-	private int scoreValue = 0;
-
+	private long scoreValue = 0;
 	[SerializeField]
 	private Text comboText;
 	private int comboValue = 1;
-
 	[SerializeField]
 	private Material shockWaveMaterial;
 
-	void Awake()
+  #region Unity Game Loop
+  void Awake()
 	{
 		instance = this;
 
@@ -79,9 +79,45 @@ public class GameManager : MonoBehaviour {
     ReadyGame();
 	}
 
-	public void ReadyGame()
+  private void Update()
+  {
+    if (this.consecutiveClearedSequences >= GameManager.SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD && this.currentDifficulty != GameDifficulty.Hard)
+    {
+      this.currentDifficulty++;
+      this.consecutiveClearedSequences = 0;
+    }
+
+    if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_MEDIUM_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Medium)
+    {
+      this.currentDifficulty = GameDifficulty.Medium;
+    }
+    else if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_HARD_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Hard)
+    {
+      this.currentDifficulty = GameDifficulty.Hard;
+    }
+
+    this.scoreText.text = this.scoreValue.ToString();
+    if (this.comboValue == 0)
+    {
+      this.comboText.text = string.Empty;
+    }
+    else
+    {
+      this.comboText.text = "Combo: x" + this.comboValue.ToString();
+    }
+  }
+
+  private void OnDestroy()
+  {
+    NeedleController.onSynapseHit -= this.SynapseHit;
+    gameTimer.OnTimerEnded -= this.OnTimerEnded;
+  }
+  #endregion
+
+  #region Start Game Sequence
+  public void ReadyGame()
 	{
-		this.gameTimer.SetTime();
+		this.gameTimer.SetTime(timerInitValueInSeconds);
 		currentSequence = null;
     currentDifficulty = GameDifficulty.Easy;
     scoreValue = 0;
@@ -114,36 +150,16 @@ public class GameManager : MonoBehaviour {
   private void StartGame()
   {
     this.IsGameActive = true;
-    this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+    this.LoadSequence();
     this.gameTimer.Reset(timerInitValueInSeconds);
   }
 
-	private void Update()
-	{
-		if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_MEDIUM_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Medium)
-		{
-			this.currentDifficulty = GameDifficulty.Medium;
-		}
-		else if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_HARD_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Hard)
-		{
-			this.currentDifficulty = GameDifficulty.Hard;
-		}
+  #endregion
 
-    this.scoreText.text = this.scoreValue.ToString();
-    if (this.comboValue == 0)
-    {
-      this.comboText.text = string.Empty;
-    }
-    else
-    {
-      this.comboText.text = "Combo: x" + this.comboValue.ToString();
-    }
-  }
-
-	#region Difficulty Level Handling
-	private bool IsSequenceCleared()
+  #region Difficulty Level Handling
+  private bool IsSequenceCleared()
 	{
-		for (int i = 0; i < this.allSynapses.Count; i++)
+		for (int i = 0, count = this.allSynapses.Count; i < count; i++)
 		{
 			if (this.allSynapses[(SynapseLocation)i].Mode == SynapseMode.OneTimePositive)
 			{
@@ -156,7 +172,7 @@ public class GameManager : MonoBehaviour {
 
 	private bool DoesSequenceHaveRepetitivePositive()
 	{
-		for (int i = 0; i < this.allSynapses.Count; i++)
+		for (int i = 0, count = this.allSynapses.Count; i < count; i++)
 		{
 			if (this.allSynapses[(SynapseLocation)i].Mode == SynapseMode.RepetitivePositive)
 			{
@@ -170,26 +186,19 @@ public class GameManager : MonoBehaviour {
 	private void AddConsecutiveSequenceClear()
 	{
 		this.consecutiveClearedSequences++;
-
-		if (this.consecutiveClearedSequences >= GameManager.SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD && this.currentDifficulty != GameDifficulty.Hard)
-		{
-			this.currentDifficulty++;
-			this.consecutiveClearedSequences = 0;
-		}
 	}
 	#endregion
 
 	#region Score Handling
 	private void ScorePositiveHit()
 	{
-		this.scoreValue += (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
+		this.scoreValue += (long) (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
 		this.comboValue++;
 	}
 
 	private void ScoreNegativeHit()
 	{
-		int decrementAmount = Mathf.RoundToInt((GameManager.SCORE_DECREMENT_PERCENTAGE) * this.scoreValue);
-		this.scoreValue -= decrementAmount;
+    this.scoreValue -= (this.scoreValue / GameManager.SCORE_DECREMENT_DIVISOR);
 		this.comboValue = 0;
 	}
 
@@ -210,7 +219,6 @@ public class GameManager : MonoBehaviour {
       return;
     }
 
-		Debug.Log(hitSynapse + " Hit!");
     Synapse synapseObject = this.allSynapses[hitSynapse];
     synapseObject.HitSynapse();
 
@@ -234,17 +242,17 @@ public class GameManager : MonoBehaviour {
 		}
 	}
 
-	IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
+	private IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
 	{
 		shockWaveMaterial.SetFloat("_CenterX", screenSpaceX);
 		shockWaveMaterial.SetFloat("_CenterY", screenSpaceY);
 
 		float tParam = 0;
 		float waveRadius;
-		while (tParam < 1)
+		while (tParam < 1.0f)
 		{
-			tParam += Time.deltaTime * 2;
-			waveRadius = Mathf.Lerp(-0.2f, 2, tParam);
+			tParam += Time.deltaTime * 2.0f;
+			waveRadius = Mathf.Lerp(-0.2f, 2.0f, tParam);
 			shockWaveMaterial.SetFloat("_Radius", waveRadius);
 			yield return null;
 		}
@@ -253,18 +261,16 @@ public class GameManager : MonoBehaviour {
 	private void OneTimePositiveHit(SynapseLocation synapseLocation)
 	{
 		this.ScorePositiveHit();
-
 		this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
-
 		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
-
 		if (this.IsSequenceCleared())
 		{
 			this.AddConsecutiveSequenceClear();
-			if (this.DoesSequenceHaveRepetitivePositive() == false)
-			{
-				StopCoroutine(this.runningSequenceCoroutine);
-				this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+      if (this.DoesSequenceHaveRepetitivePositive() == false)
+      {
+        if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
+        if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
+        this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
 			}
 		}
 	}
@@ -272,18 +278,16 @@ public class GameManager : MonoBehaviour {
 	private void OneTimeNegativeHit(SynapseLocation synapseLocation)
 	{
 		this.ScoreNegativeHit();
-
 		this.consecutiveClearedSequences = 0;
-
 		CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
-
 		Synapse synapseObject = this.allSynapses[synapseLocation];
 		float screenSpaceX = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).x;
 		float screenSpaceY = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).y;
 		StartCoroutine(this.ShockWaveEffect(screenSpaceX, screenSpaceY));
 
-		StopCoroutine(this.runningSequenceCoroutine);
-		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+    if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
+    if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
+    this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
 	}
 
 	private void NeutralHit(SynapseLocation synapseLocation)
@@ -294,19 +298,27 @@ public class GameManager : MonoBehaviour {
 
 	private void RepetitivePositiveHit(SynapseLocation synapseLocation)
 	{
-		CameraShaker.Instance.ShakeOnce(3f, 2f, 0.1f, 0.1f);
+		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
 		this.ScorePositiveHit();
 	}
   #endregion
 
   #region Sequence Load Handling
-  public void LoadSequence(Sequence sequenceToLoad)
+  private IEnumerator LoadSequenceOnNextFrame()
+  {
+    // Wait a frame before loading the next sequence to let all the animations complete.
+    yield return null;
+    LoadSequence();
+  }
+
+  private void LoadSequence()
 	{
-		for (int i = 0, count = allSynapses.Count; i < count; i++)
+    Sequence sequenceToLoad = SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence);
+    this.currentSequence = sequenceToLoad;
+    for (int i = 0, count = allSynapses.Count; i < count; i++)
 		{
 			this.allSynapses[(SynapseLocation) i].SetSynapseMode(sequenceToLoad.synapseModes[i]);
 		}
-		this.currentSequence = sequenceToLoad;
 		this.runningSequenceCoroutine = this.StartCoroutine(this.RunSequence());
 	}
 
@@ -326,7 +338,8 @@ public class GameManager : MonoBehaviour {
 			this.consecutiveClearedSequences = 0;
 		}
 
-		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
+    if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
+    this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
 	}
   #endregion
 
