@@ -12,8 +12,11 @@ public class GameManager : MonoBehaviour
 	private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (2.0f / 3.0f);
 	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS * (1.0f / 3.0f);
 
+  // Multiplies with the combo value to increment the current score which is a long.
 	private const int SCORE_INCREMENT_VALUE = 50;
-	private const float SCORE_DECREMENT_PERCENTAGE = 0.3f;
+  // Determines how much to decrement the score, which is a long, by.
+  // 3 means decrement the score by a third.
+	private const long SCORE_DECREMENT_DIVISOR = 3;
 
 	public static GameManager instance;
 
@@ -45,7 +48,7 @@ public class GameManager : MonoBehaviour
   private Text CountdownText;
 	[SerializeField]
 	private Text scoreText;
-	private int scoreValue = 0;
+	private long scoreValue = 0;
 	[SerializeField]
 	private Text comboText;
 	private int comboValue = 1;
@@ -189,14 +192,13 @@ public class GameManager : MonoBehaviour
 	#region Score Handling
 	private void ScorePositiveHit()
 	{
-		this.scoreValue += (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
+		this.scoreValue += (long) (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
 		this.comboValue++;
 	}
 
 	private void ScoreNegativeHit()
 	{
-		int decrementAmount = Mathf.RoundToInt((GameManager.SCORE_DECREMENT_PERCENTAGE) * this.scoreValue);
-		this.scoreValue -= decrementAmount;
+    this.scoreValue -= (this.scoreValue / GameManager.SCORE_DECREMENT_DIVISOR);
 		this.comboValue = 0;
 	}
 
