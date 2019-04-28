@@ -12,24 +12,14 @@ public class TriggerShockwave : MonoBehaviour
 		shockWaveMaterial.SetFloat("_Radius", -0.2f);
 	}
 
-	void Update()
+	IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
 	{
-		if (Input.GetButtonDown("Fire1"))
-		{
-			Vector2 screenPos = new Vector2(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height);
-			shockWaveMaterial.SetFloat("_CenterX", screenPos.x);
-			shockWaveMaterial.SetFloat("_CenterY", screenPos.y);
-			StopAllCoroutines();
-			StartCoroutine(ShockWaveEffect());
-		}
-	}
-
-	IEnumerator ShockWaveEffect()
-	{
+		Debug.LogError("Executing shockwave");
 		float tParam = 0;
 		float waveRadius;
 		while (tParam < 1)
 		{
+			Debug.LogError("In loop");
 			tParam += Time.deltaTime * 2;
 			waveRadius = Mathf.Lerp(-0.2f, 2, tParam);
 			shockWaveMaterial.SetFloat("_Radius", waveRadius);

@@ -19,6 +19,8 @@ public class Synapse : MonoBehaviour
   public void HitSynapse()
   {
     Illuminator.OnSynapseTouched(Mode);
+
+
   }
 
   public void SetSynapseMode(SynapseMode modeToSet)

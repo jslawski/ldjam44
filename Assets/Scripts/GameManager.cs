@@ -53,6 +53,9 @@ public class GameManager : MonoBehaviour {
 	private Text comboText;
 	private int comboValue = 1;
 
+	[SerializeField]
+	private Material shockWaveMaterial;
+
 	void Awake()
 	{
 		instance = this;
@@ -207,7 +210,6 @@ public class GameManager : MonoBehaviour {
     }
 
 		Debug.Log(hitSynapse + " Hit!");
-		this.allSynapses[hitSynapse].HitSynapse();
 
 		switch (this.allSynapses[hitSynapse].Mode)
 		{
@@ -228,7 +230,29 @@ public class GameManager : MonoBehaviour {
 				break;
 		}
 
-		this.allSynapses[hitSynapse].HitSynapse();
+		Synapse synapseObject = this.allSynapses[hitSynapse];
+
+		synapseObject.HitSynapse();
+	}
+
+	IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
+	{
+		Debug.LogError("ScreenSpace Coordinates: (" + screenSpaceX + ", " + screenSpaceY + ")");
+
+		shockWaveMaterial.SetFloat("_CenterX", screenSpaceX);
+		shockWaveMaterial.SetFloat("_CenterY", screenSpaceY);
+
+		Debug.LogError("Executing shockwave");
+		float tParam = 0;
+		float waveRadius;
+		while (tParam < 1)
+		{
+			Debug.LogError("In loop");
+			tParam += Time.deltaTime * 2;
+			waveRadius = Mathf.Lerp(-0.2f, 2, tParam);
+			shockWaveMaterial.SetFloat("_Radius", waveRadius);
+			yield return null;
+		}
 	}
 
 	private void OneTimePositiveHit(SynapseLocation synapseLocation)
@@ -257,6 +281,11 @@ public class GameManager : MonoBehaviour {
 		this.consecutiveClearedSequences = 0;
 
 		CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
+
+		Synapse synapseObject = this.allSynapses[synapseLocation];
+		float screenSpaceX = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).x;
+		float screenSpaceY = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).y;
+		StartCoroutine(this.ShockWaveEffect(screenSpaceX, screenSpaceY));
 
 		StopCoroutine(this.runningSequenceCoroutine);
 		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
