@@ -8,7 +8,7 @@ public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, 
 public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour
 {
-	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 15;
+	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 10;
 
   // Multiplies with the combo value to increment the current score which is a long.
 	private const int SCORE_INCREMENT_VALUE = 50;
@@ -27,12 +27,11 @@ public class GameManager : MonoBehaviour
   private Coroutine currentLoadNextSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
   private bool IsGameActive = false;
-  private float TimerMediumLevelUpThreshold = 0.0f;
-  private float TimerHardLevelUpThreshold = 0.0f;
 
 	[SerializeField]
 	private Timer gameTimer;
-
+  [SerializeField]
+  private float NegativeHitTimerPenaltyInSeconds = 3.0f;
   [SerializeField]
   private GameObject gameOverUI;
   /// <summary>
@@ -60,8 +59,6 @@ public class GameManager : MonoBehaviour
   void Awake()
 	{
 		instance = this;
-    TimerMediumLevelUpThreshold = InitialGameTimerInSeconds * (2.0f / 3.0f);
-    TimerHardLevelUpThreshold = InitialGameTimerInSeconds * (1.0f / 3.0f);
     this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
 		GameObject synapsesParent = GameObject.Find("NewSynapses");
 		Synapse[] synapses = synapsesParent.GetComponentsInChildren<Synapse>();
@@ -86,15 +83,6 @@ public class GameManager : MonoBehaviour
     {
       this.currentDifficulty++;
       this.consecutiveClearedSequences = 0;
-    }
-
-    if (this.gameTimer.TimerValueInSeconds <= TimerMediumLevelUpThreshold && this.currentDifficulty < GameDifficulty.Medium)
-    {
-      this.currentDifficulty = GameDifficulty.Medium;
-    }
-    else if (this.gameTimer.TimerValueInSeconds <= TimerHardLevelUpThreshold && this.currentDifficulty < GameDifficulty.Hard)
-    {
-      this.currentDifficulty = GameDifficulty.Hard;
     }
 
     this.scoreText.text = this.scoreValue.ToString();
@@ -199,6 +187,7 @@ public class GameManager : MonoBehaviour
 
 	private void ScoreNegativeHit()
 	{
+    gameTimer.ReduceTimerBy(NegativeHitTimerPenaltyInSeconds);
     this.scoreValue -= (this.scoreValue / GameManager.SCORE_DECREMENT_DIVISOR);
 		this.comboValue = 0;
 	}
