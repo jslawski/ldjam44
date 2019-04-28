@@ -9,7 +9,7 @@ public class TutorialManager : MonoBehaviour {
   public static TutorialManager instance;
 
   public Dictionary<SynapseLocation, Synapse> allSynapses;
-  private const float DEFAULT_WAIT_DURATION = 2f;
+  private const float DEFAULT_WAIT_DURATION = 5f;
 
   [SerializeField]
   private Material shockWaveMaterial;
@@ -188,6 +188,11 @@ public class TutorialManager : MonoBehaviour {
       shockWaveMaterial.SetFloat("_Radius", waveRadius);
       yield return null;
     }
+  }
+
+  public void SkipTutorial()
+  {
+    StartCoroutine(this.FinishTutorial());
   }
 }
 
