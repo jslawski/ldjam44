@@ -36,13 +36,13 @@ public class SynapseIlluminator : MonoBehaviour
     switch (touchedSynapseMode)
     {
       case SynapseMode.OneTimePositive:
-        // TODO: Add any touch effects we want.
+        PositiveParticleEffect.Play();
         break;
       case SynapseMode.OneTimeNegative:
-        // TODO: Add any touch effects we want.
+        NegativeParticleEffect.Play();
         break;
       case SynapseMode.RepetitivePositive:
-        // TODO: Add any touch effects we want.
+        PositiveParticleEffect.Play();
         break;
       case SynapseMode.Neutral:
         // TODO: Add any touch effects we want.
