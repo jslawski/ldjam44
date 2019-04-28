@@ -9814,6 +9814,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 108363764}
+  NegativeParticleEffect: {fileID: 1300380556}
 --- !u!114 &265446640
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9827,8 +9829,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 265446639}
-  PositiveParticleEffect: {fileID: 108363764}
-  NegativeParticleEffect: {fileID: 1300380556}
 --- !u!1 &275796932
 GameObject:
   m_ObjectHideFlags: 0
@@ -19166,6 +19166,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &350363380
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -19179,8 +19181,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 350363379}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &350363381
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -28753,6 +28753,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 1810681300}
+  NegativeParticleEffect: {fileID: 617543173}
 --- !u!114 &525063158
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -28766,8 +28768,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 525063157}
-  PositiveParticleEffect: {fileID: 1810681300}
-  NegativeParticleEffect: {fileID: 617543173}
 --- !u!1001 &545861666
 Prefab:
   m_ObjectHideFlags: 0
@@ -33505,6 +33505,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 74181831}
+  NegativeParticleEffect: {fileID: 1712474562}
 --- !u!114 &649477283
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -33518,8 +33520,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 649477282}
-  PositiveParticleEffect: {fileID: 74181831}
-  NegativeParticleEffect: {fileID: 1712474562}
 --- !u!1 &665722803
 GameObject:
   m_ObjectHideFlags: 0
@@ -38659,6 +38659,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 275796935}
+  NegativeParticleEffect: {fileID: 511977616}
 --- !u!114 &915309185
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -38672,8 +38674,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 915309184}
-  PositiveParticleEffect: {fileID: 275796935}
-  NegativeParticleEffect: {fileID: 511977616}
 --- !u!1001 &962086182
 Prefab:
   m_ObjectHideFlags: 0
@@ -43711,6 +43711,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1150124282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43724,8 +43726,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1150124281}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1150124283
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -43882,6 +43882,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1183742404
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -43895,8 +43897,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1183742403}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1183742405
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -48649,6 +48649,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1262154674
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48662,8 +48664,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1262154673}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1262154675
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -48712,6 +48712,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 888070293}
+  NegativeParticleEffect: {fileID: 1596329770}
 --- !u!114 &1294769187
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -48725,8 +48727,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1294769186}
-  PositiveParticleEffect: {fileID: 888070293}
-  NegativeParticleEffect: {fileID: 1596329770}
 --- !u!1001 &1295066859
 Prefab:
   m_ObjectHideFlags: 0
@@ -53558,6 +53558,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1313328188
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53571,8 +53573,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1313328187}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1313328189
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -53707,6 +53707,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1383922261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -53720,8 +53722,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1383922260}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1383922262
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -58456,6 +58456,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 322295950}
+  NegativeParticleEffect: {fileID: 964388751}
 --- !u!114 &1561605914
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -58469,8 +58471,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1561605913}
-  PositiveParticleEffect: {fileID: 322295950}
-  NegativeParticleEffect: {fileID: 964388751}
 --- !u!1 &1596329767
 GameObject:
   m_ObjectHideFlags: 0
@@ -63406,6 +63406,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1670924298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -63419,8 +63421,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1670924297}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1670924299
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -68089,6 +68089,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 1232609598}
+  NegativeParticleEffect: {fileID: 1439382045}
 --- !u!114 &1730383858
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68102,8 +68104,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1730383857}
-  PositiveParticleEffect: {fileID: 1232609598}
-  NegativeParticleEffect: {fileID: 1439382045}
 --- !u!1 &1737082643
 GameObject:
   m_ObjectHideFlags: 0
@@ -68170,6 +68170,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 0}
+  NegativeParticleEffect: {fileID: 0}
 --- !u!114 &1737082646
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -68183,8 +68185,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1737082645}
-  PositiveParticleEffect: {fileID: 0}
-  NegativeParticleEffect: {fileID: 0}
 --- !u!135 &1737082647
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -72973,6 +72973,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9887399af8748a148804bdfa21569ff9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PositiveParticleEffect: {fileID: 2058786438}
+  NegativeParticleEffect: {fileID: 474213636}
 --- !u!114 &1928600586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -72986,8 +72988,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Mode: 3
   Illuminator: {fileID: 1928600585}
-  PositiveParticleEffect: {fileID: 2058786438}
-  NegativeParticleEffect: {fileID: 474213636}
 --- !u!1 &1941727372
 GameObject:
   m_ObjectHideFlags: 0

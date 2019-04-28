@@ -9,8 +9,7 @@ public class Synapse : MonoBehaviour
 {
   public SynapseMode Mode = SynapseMode.Neutral;
   public SynapseIlluminator Illuminator;
-  public ParticleSystem PositiveParticleEffect;
-  public ParticleSystem NegativeParticleEffect;
+
 
   public void Awake()
   {
@@ -21,8 +20,6 @@ public class Synapse : MonoBehaviour
   public void HitSynapse()
   {
     Illuminator.OnSynapseTouched(Mode);
-
-
   }
 
   public void SetSynapseMode(SynapseMode modeToSet)

@@ -4,6 +4,10 @@ using UnityEngine;
 public class SynapseIlluminator : MonoBehaviour
 {
   private float flashOnDurationInSeconds = 0.1f;
+  [SerializeField]
+  private ParticleSystem PositiveParticleEffect;
+  [SerializeField]
+  private ParticleSystem NegativeParticleEffect;
 
   public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
@@ -32,13 +36,13 @@ public class SynapseIlluminator : MonoBehaviour
     switch (touchedSynapseMode)
     {
       case SynapseMode.OneTimePositive:
-        // TODO: Add any touch effects we want.
+        PositiveParticleEffect.Play();
         break;
       case SynapseMode.OneTimeNegative:
-        // TODO: Add any touch effects we want.
+        NegativeParticleEffect.Play();
         break;
       case SynapseMode.RepetitivePositive:
-        // TODO: Add any touch effects we want.
+        PositiveParticleEffect.Play();
         break;
       case SynapseMode.Neutral:
         // TODO: Add any touch effects we want.

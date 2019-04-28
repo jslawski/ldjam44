@@ -211,8 +211,10 @@ public class GameManager : MonoBehaviour {
     }
 
 		Debug.Log(hitSynapse + " Hit!");
+    Synapse synapseObject = this.allSynapses[hitSynapse];
+    synapseObject.HitSynapse();
 
-		switch (this.allSynapses[hitSynapse].Mode)
+    switch (this.allSynapses[hitSynapse].Mode)
 		{
 			case SynapseMode.OneTimePositive:
 				this.OneTimePositiveHit(hitSynapse);
@@ -230,10 +232,6 @@ public class GameManager : MonoBehaviour {
 				Debug.LogError("GameManager.SynapseHit: Unknown synapse mode");
 				break;
 		}
-
-		Synapse synapseObject = this.allSynapses[hitSynapse];
-
-		synapseObject.HitSynapse();
 	}
 
 	IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
