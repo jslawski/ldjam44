@@ -237,17 +237,13 @@ public class GameManager : MonoBehaviour {
 
 	IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
 	{
-		Debug.LogError("ScreenSpace Coordinates: (" + screenSpaceX + ", " + screenSpaceY + ")");
-
 		shockWaveMaterial.SetFloat("_CenterX", screenSpaceX);
 		shockWaveMaterial.SetFloat("_CenterY", screenSpaceY);
 
-		Debug.LogError("Executing shockwave");
 		float tParam = 0;
 		float waveRadius;
 		while (tParam < 1)
 		{
-			Debug.LogError("In loop");
 			tParam += Time.deltaTime * 2;
 			waveRadius = Mathf.Lerp(-0.2f, 2, tParam);
 			shockWaveMaterial.SetFloat("_Radius", waveRadius);

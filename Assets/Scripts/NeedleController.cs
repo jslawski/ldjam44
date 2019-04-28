@@ -30,10 +30,10 @@ public class NeedleController : MonoBehaviour {
 	private Coroutine moveCoroutine;
 
 	private float moveSpeed = 0.5f;
-	private float maxUpDistance = 5f;
-	private float maxDownDistance = 5f;
+	private float maxUpDistance = 1f;
+	private float maxDownDistance = 3f;
 	private float rotationSpeed = 10f;
-	private float maxRotation = 45f;
+	private float maxRotation = 39f;
 
 	public delegate void SynapseHit(SynapseLocation hitSynapse);
 	public static event SynapseHit onSynapseHit; 
@@ -124,10 +124,12 @@ public class NeedleController : MonoBehaviour {
 		if (this.side == NeedleSide.Left && pressedKey == this.rightKey)
 		{
 			finalRotation += ((360f - finalRotation) / 2.5f);
+			Debug.LogError("Left Needle Final Rotation: " + finalRotation);
 		}
 		else if (this.side == NeedleSide.Right && pressedKey == this.leftKey)
 		{
 			finalRotation = finalRotation - (finalRotation / 2.5f);
+			Debug.LogError("Right Needle Final Rotation: " + finalRotation);
 		}
 
 		bool synapseHit = false;
