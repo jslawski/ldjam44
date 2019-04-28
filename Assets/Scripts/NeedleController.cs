@@ -124,12 +124,10 @@ public class NeedleController : MonoBehaviour {
 		if (this.side == NeedleSide.Left && pressedKey == this.rightKey)
 		{
 			finalRotation += ((360f - finalRotation) / 2.5f);
-			Debug.LogError("Left Needle Final Rotation: " + finalRotation);
 		}
 		else if (this.side == NeedleSide.Right && pressedKey == this.leftKey)
 		{
 			finalRotation = finalRotation - (finalRotation / 2.5f);
-			Debug.LogError("Right Needle Final Rotation: " + finalRotation);
 		}
 
 		bool synapseHit = false;
