@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using EZCameraShake;
 
 public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, RightRight, RightUp, RightDown };
 public enum GameDifficulty {  Easy, Medium, Hard };
@@ -236,6 +237,8 @@ public class GameManager : MonoBehaviour {
 
 		this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
 
+		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
+
 		if (this.IsSequenceCleared())
 		{
 			this.AddConsecutiveSequenceClear();
@@ -253,17 +256,21 @@ public class GameManager : MonoBehaviour {
 
 		this.consecutiveClearedSequences = 0;
 
+		CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
+
 		StopCoroutine(this.runningSequenceCoroutine);
 		this.LoadSequence(SequenceRetriever.GetNextSequence(this.currentDifficulty, this.currentSequence));
 	}
 
 	private void NeutralHit(SynapseLocation synapseLocation)
 	{
+		CameraShaker.Instance.ShakeOnce(4f, 1f, 0.3f, 0.3f);
 		this.ScoreNeutralHit();
 	}
 
 	private void RepetitivePositiveHit(SynapseLocation synapseLocation)
 	{
+		CameraShaker.Instance.ShakeOnce(3f, 2f, 0.1f, 0.1f);
 		this.ScorePositiveHit();
 	}
   #endregion

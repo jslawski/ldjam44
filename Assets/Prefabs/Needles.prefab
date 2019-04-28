@@ -200,6 +200,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630308c1f6663d842a4bdac26adde70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  side: 0
   upKey: 119
   downKey: 115
   leftKey: 97
@@ -219,6 +220,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 630308c1f6663d842a4bdac26adde70b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  side: 1
   upKey: 273
   downKey: 274
   leftKey: 276

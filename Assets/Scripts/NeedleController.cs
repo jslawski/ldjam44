@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class NeedleController : MonoBehaviour {
 
+	private enum NeedleSide { Left, Right };
+
+	[SerializeField]
+	private NeedleSide side;
+
 	[SerializeField]
 	private KeyCode upKey;
 	[SerializeField]
@@ -115,6 +120,15 @@ public class NeedleController : MonoBehaviour {
 		Transform cachedTransform = this.transform;
 		float finalRotation = (pressedKey == this.leftKey) ? this.maxRotation : 360 - this.maxRotation;
 		float thisRotationSpeed = (pressedKey == this.leftKey) ? this.rotationSpeed : -this.rotationSpeed;
+
+		if (this.side == NeedleSide.Left && pressedKey == this.rightKey)
+		{
+			finalRotation += ((360f - finalRotation) / 2.5f);
+		}
+		else if (this.side == NeedleSide.Right && pressedKey == this.leftKey)
+		{
+			finalRotation = finalRotation - (finalRotation / 2.5f);
+		}
 
 		bool synapseHit = false;
 
