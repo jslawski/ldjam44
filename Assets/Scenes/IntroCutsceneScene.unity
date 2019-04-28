@@ -450,7 +450,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1763092969}
-  videoName: testVideo.mp4
+  videoName: GrannyKillClips.mp4
 --- !u!328 &1763092969
 VideoPlayer:
   m_ObjectHideFlags: 0
