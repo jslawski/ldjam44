@@ -28,6 +28,9 @@ public class SynapseIlluminator : MonoBehaviour
       case SynapseMode.Neutral:
         renderer.material = Resources.Load<Material>("SynapseBase");
         break;
+      case SynapseMode.RepetitivePositiveTutorial:
+        StartCoroutine(this.BlinkSynapseTutorial());
+        break;
     }
   }
 
@@ -64,5 +67,45 @@ public class SynapseIlluminator : MonoBehaviour
       yield return new WaitForSeconds(offDuration);
     }
 
+  }
+
+  private IEnumerator BlinkSynapseTutorial()
+  {
+    MeshRenderer renderer = GetComponent<MeshRenderer>();
+    float totalDuration = 5f;
+    float offDuration = 0.0f;
+
+    while (TutorialManager.instance.flashingSynapseHit == false)
+    {
+      offDuration = totalDuration / 10f;
+
+      renderer.material = Resources.Load<Material>("BlinkingSynapse");
+      yield return new WaitForSeconds(this.flashOnDurationInSeconds);
+
+      if (TutorialManager.instance.flashingSynapseHit == true)
+      {
+        break;
+      }
+
+      renderer.material = Resources.Load<Material>("SynapseBase");
+      yield return new WaitForSeconds(offDuration);
+
+      if (TutorialManager.instance.flashingSynapseHit == true)
+      {
+        break;
+      }
+    }
+
+    for (float i = 0; i < totalDuration; i += Time.deltaTime + flashOnDurationInSeconds + offDuration)
+    {
+      offDuration = ((totalDuration - i) / 10.0f);
+
+      renderer.material = Resources.Load<Material>("BlinkingSynapse");
+      yield return new WaitForSeconds(this.flashOnDurationInSeconds);
+      renderer.material = Resources.Load<Material>("SynapseBase");
+      yield return new WaitForSeconds(offDuration);
+    }
+
+    TutorialManager.instance.tutorialComplete = true;
   }
 }

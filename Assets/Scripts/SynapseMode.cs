@@ -3,5 +3,6 @@
   OneTimePositive,
   OneTimeNegative,
   RepetitivePositive,
-  Neutral
+  Neutral,
+  RepetitivePositiveTutorial
 }

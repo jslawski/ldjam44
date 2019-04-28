@@ -36,11 +36,18 @@ public class NeedleController : MonoBehaviour {
 	private float maxRotation = 39f;
 
 	public delegate void SynapseHit(SynapseLocation hitSynapse);
-	public static event SynapseHit onSynapseHit; 
-	
+	public static event SynapseHit onSynapseHit;
+
+  public bool isTutorialAnimating = false;
+
 	// Update is called once per frame
 	void Update() {
-		if (this.moveCoroutine != null)
+    if (this.isTutorialAnimating == true)
+    {
+      return;
+    }
+
+    if (this.moveCoroutine != null)
 		{
 			return;
 		}
