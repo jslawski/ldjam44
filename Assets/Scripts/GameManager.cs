@@ -9,8 +9,6 @@ public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour
 {
 	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 15;
-  private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS* (2.0f / 3.0f);
-	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS* (1.0f / 3.0f);
 
   // Multiplies with the combo value to increment the current score which is a long.
 	private const int SCORE_INCREMENT_VALUE = 50;
@@ -18,16 +16,20 @@ public class GameManager : MonoBehaviour
   // 3 means decrement the score by a third.
 	private const long SCORE_DECREMENT_DIVISOR = 3;
 
-	public static GameManager instance;
+  public static GameManager instance = null;
 
 	public Dictionary<SynapseLocation, Synapse> allSynapses;
 	public GameDifficulty currentDifficulty = GameDifficulty.Easy;
   public Sequence currentSequence = null;
+  public float InitialGameTimerInSeconds = 120.0F;
 
-	private Coroutine runningSequenceCoroutine;
+  private Coroutine runningSequenceCoroutine;
   private Coroutine currentLoadNextSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
   private bool IsGameActive = false;
+  private float TimerMediumLevelUpThreshold = 0.0f;
+  private float TimerHardLevelUpThreshold = 0.0f;
+
 	[SerializeField]
 	private Timer gameTimer;
 
@@ -58,9 +60,9 @@ public class GameManager : MonoBehaviour
   void Awake()
 	{
 		instance = this;
-
-		this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
-
+    TimerMediumLevelUpThreshold = InitialGameTimerInSeconds * (2.0f / 3.0f);
+    TimerHardLevelUpThreshold = InitialGameTimerInSeconds * (1.0f / 3.0f);
+    this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
 		GameObject synapsesParent = GameObject.Find("NewSynapses");
 		Synapse[] synapses = synapsesParent.GetComponentsInChildren<Synapse>();
 
@@ -86,11 +88,11 @@ public class GameManager : MonoBehaviour
       this.consecutiveClearedSequences = 0;
     }
 
-    if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_MEDIUM_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Medium)
+    if (this.gameTimer.TimerValueInSeconds <= TimerMediumLevelUpThreshold && this.currentDifficulty < GameDifficulty.Medium)
     {
       this.currentDifficulty = GameDifficulty.Medium;
     }
-    else if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_HARD_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Hard)
+    else if (this.gameTimer.TimerValueInSeconds <= TimerHardLevelUpThreshold && this.currentDifficulty < GameDifficulty.Hard)
     {
       this.currentDifficulty = GameDifficulty.Hard;
     }
@@ -116,7 +118,7 @@ public class GameManager : MonoBehaviour
   #region Start Game Sequence
   public void ReadyGame()
 	{
-		this.gameTimer.SetTime(Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS);
+		this.gameTimer.SetTime(InitialGameTimerInSeconds);
 		currentSequence = null;
     currentDifficulty = GameDifficulty.Easy;
     scoreValue = 0;
@@ -150,7 +152,7 @@ public class GameManager : MonoBehaviour
   {
     this.IsGameActive = true;
     this.LoadSequence();
-    this.gameTimer.Reset(Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS);
+    this.gameTimer.StartTimer(InitialGameTimerInSeconds);
   }
 
   #endregion

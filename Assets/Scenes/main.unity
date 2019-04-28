@@ -9622,8 +9622,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a0f1b92207cf0946a237cf9ee67aaac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  TimerText: {fileID: 147634544}
   IsPaused: 1
+  TimerText: {fileID: 147634544}
 --- !u!114 &147634544
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -73233,8 +73233,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentDifficulty: 0
   currentSequence: {fileID: 0}
+  InitialGameTimerInSeconds: 90
   gameTimer: {fileID: 147634543}
-  timerInitValueInSeconds: 60
   gameOverUI: {fileID: 2065551195}
   getReadyUI: {fileID: 1941727372}
   CountdownText: {fileID: 508377557}
