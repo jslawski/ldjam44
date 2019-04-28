@@ -16,11 +16,6 @@ public class ShakeDemo : MonoBehaviour
 
 	void OnGUI()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Application.LoadLevel(Application.loadedLevel);
-        }
-
         Slider s = delegate(float val, string prefix, float min, float max, int pad)
         {
             GUILayout.BeginHorizontal();

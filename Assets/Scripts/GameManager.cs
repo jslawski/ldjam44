@@ -8,9 +8,7 @@ public enum SynapseLocation { LeftLeft, LeftRight, LeftUp, LeftDown, RightLeft, 
 public enum GameDifficulty {  Easy, Medium, Hard };
 public class GameManager : MonoBehaviour
 {
-	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 15;
-  private const float TIMER_MEDIUM_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS* (2.0f / 3.0f);
-	private const float TIMER_HARD_LEVEL_UP_THRESHOLD = Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS* (1.0f / 3.0f);
+	private const int SEQUENCE_CLEAR_LEVEL_UP_THRESHOLD = 10;
 
   // Multiplies with the combo value to increment the current score which is a long.
 	private const int SCORE_INCREMENT_VALUE = 50;
@@ -18,19 +16,22 @@ public class GameManager : MonoBehaviour
   // 3 means decrement the score by a third.
 	private const long SCORE_DECREMENT_DIVISOR = 3;
 
-	public static GameManager instance;
+  public static GameManager instance = null;
 
 	public Dictionary<SynapseLocation, Synapse> allSynapses;
 	public GameDifficulty currentDifficulty = GameDifficulty.Easy;
   public Sequence currentSequence = null;
+  public float InitialGameTimerInSeconds = 120.0F;
 
-	private Coroutine runningSequenceCoroutine;
+  private Coroutine runningSequenceCoroutine;
   private Coroutine currentLoadNextSequenceCoroutine;
 	private int consecutiveClearedSequences = 0;
   private bool IsGameActive = false;
+
 	[SerializeField]
 	private Timer gameTimer;
-
+  [SerializeField]
+  private float NegativeHitTimerPenaltyInSeconds = 3.0f;
   [SerializeField]
   private GameObject gameOverUI;
   /// <summary>
@@ -58,9 +59,7 @@ public class GameManager : MonoBehaviour
   void Awake()
 	{
 		instance = this;
-
-		this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
-
+    this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
 		GameObject synapsesParent = GameObject.Find("NewSynapses");
 		Synapse[] synapses = synapsesParent.GetComponentsInChildren<Synapse>();
 
@@ -86,15 +85,6 @@ public class GameManager : MonoBehaviour
       this.consecutiveClearedSequences = 0;
     }
 
-    if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_MEDIUM_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Medium)
-    {
-      this.currentDifficulty = GameDifficulty.Medium;
-    }
-    else if (this.gameTimer.TimerValueInSeconds <= GameManager.TIMER_HARD_LEVEL_UP_THRESHOLD && this.currentDifficulty < GameDifficulty.Hard)
-    {
-      this.currentDifficulty = GameDifficulty.Hard;
-    }
-
     this.scoreText.text = this.scoreValue.ToString();
     if (this.comboValue == 0)
     {
@@ -116,7 +106,7 @@ public class GameManager : MonoBehaviour
   #region Start Game Sequence
   public void ReadyGame()
 	{
-		this.gameTimer.SetTime(Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS);
+		this.gameTimer.SetTime(InitialGameTimerInSeconds);
 		currentSequence = null;
     currentDifficulty = GameDifficulty.Easy;
     scoreValue = 0;
@@ -150,7 +140,7 @@ public class GameManager : MonoBehaviour
   {
     this.IsGameActive = true;
     this.LoadSequence();
-    this.gameTimer.Reset(Timer.DEFAULT_TIMER_INIT_VALUE_IN_SECONDS);
+    this.gameTimer.StartTimer(InitialGameTimerInSeconds);
   }
 
   #endregion
@@ -197,6 +187,7 @@ public class GameManager : MonoBehaviour
 
 	private void ScoreNegativeHit()
 	{
+    gameTimer.ReduceTimerBy(NegativeHitTimerPenaltyInSeconds);
     this.scoreValue -= (this.scoreValue / GameManager.SCORE_DECREMENT_DIVISOR);
 		this.comboValue = 0;
 	}
@@ -208,38 +199,63 @@ public class GameManager : MonoBehaviour
 	#endregion
 
 	#region Synapse Hit Handling
-	private void SynapseHit(SynapseLocation hitSynapse)
+	private void SynapseHit(SynapseLocation synapseHitLocation)
 	{
-    if (IsGameActive == false)
+    if (IsGameActive)
     {
-      // We want the player to be able to move the needles
-      // around when the game is over but don't want to
-      // process those hits.
-      return;
+      ProcessSynapseHit(synapseHitLocation);
     }
+    // Display the hit effects all the time, even on game over.
+    DisplaySynapseHitEffect(synapseHitLocation);
+	}
 
-    Synapse synapseObject = this.allSynapses[hitSynapse];
+  private void ProcessSynapseHit(SynapseLocation synapseHitLocation)
+  {
+    Synapse synapseObject = this.allSynapses[synapseHitLocation];
     synapseObject.HitSynapse();
 
-    switch (this.allSynapses[hitSynapse].Mode)
-		{
-			case SynapseMode.OneTimePositive:
-				this.OneTimePositiveHit(hitSynapse);
-				break;
-			case SynapseMode.OneTimeNegative:
-				this.OneTimeNegativeHit(hitSynapse);
-				break;
-			case SynapseMode.Neutral:
-				this.NeutralHit(hitSynapse);
-				break;
-			case SynapseMode.RepetitivePositive:
-				this.RepetitivePositiveHit(hitSynapse);
-				break;
-			default:
-				Debug.LogError("GameManager.SynapseHit: Unknown synapse mode");
-				break;
-		}
-	}
+    switch (synapseObject.Mode)
+    {
+      case SynapseMode.OneTimePositive:
+        this.ProcessOneTimePositiveHit(synapseHitLocation);
+        break;
+      case SynapseMode.OneTimeNegative:
+        this.ProcessOneTimeNegativeHit(synapseHitLocation);
+        break;
+      case SynapseMode.Neutral:
+        this.ProcessNeutralHit(synapseHitLocation);
+        break;
+      case SynapseMode.RepetitivePositive:
+        this.ProcessRepetitivePositiveHit(synapseHitLocation);
+        break;
+      default:
+        Debug.LogError("GameManager.ProcessSynapseHit: Unknown synapse mode");
+        break;
+    }
+  }
+
+  private void DisplaySynapseHitEffect(SynapseLocation synapseHitLocation)
+  {
+    Synapse synapseObject = this.allSynapses[synapseHitLocation];
+    switch (synapseObject.Mode)
+    {
+      case SynapseMode.OneTimePositive:
+        this.DisplayOneTimePositiveHitEffect(synapseHitLocation);
+        break;
+      case SynapseMode.OneTimeNegative:
+        this.DisplayOneTimeNegativeHitEffect(synapseHitLocation);
+        break;
+      case SynapseMode.Neutral:
+        this.DisplayNeutralHitEffect(synapseHitLocation);
+        break;
+      case SynapseMode.RepetitivePositive:
+        this.DisplayRepetitivePositiveHitEffect(synapseHitLocation);
+        break;
+      default:
+        Debug.LogError("GameManager.DisplaySynapseHitEffect: Unknown synapse mode");
+        break;
+    }
+  }
 
 	private IEnumerator ShockWaveEffect(float screenSpaceX, float screenSpaceY)
 	{
@@ -257,49 +273,65 @@ public class GameManager : MonoBehaviour
 		}
 	}
 
-	private void OneTimePositiveHit(SynapseLocation synapseLocation)
+	private void ProcessOneTimePositiveHit(SynapseLocation synapseLocation)
 	{
-		this.ScorePositiveHit();
-		this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
-		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
-		if (this.IsSequenceCleared())
-		{
-			this.AddConsecutiveSequenceClear();
+    this.ScorePositiveHit();
+    this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
+
+    if (this.IsSequenceCleared())
+    {
+      this.AddConsecutiveSequenceClear();
       if (this.DoesSequenceHaveRepetitivePositive() == false)
       {
         if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
         if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
         this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
-			}
-		}
+      }
+    }
 	}
 
-	private void OneTimeNegativeHit(SynapseLocation synapseLocation)
-	{
-		this.ScoreNegativeHit();
-		this.consecutiveClearedSequences = 0;
-		CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
-		Synapse synapseObject = this.allSynapses[synapseLocation];
-		float screenSpaceX = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).x;
-		float screenSpaceY = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).y;
-		StartCoroutine(this.ShockWaveEffect(screenSpaceX, screenSpaceY));
+  private void DisplayOneTimePositiveHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
+  }
 
+  private void ProcessOneTimeNegativeHit(SynapseLocation synapseLocation)
+	{
+		this.consecutiveClearedSequences = 0;
+    this.ScoreNegativeHit();
     if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
     if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
     this.currentLoadNextSequenceCoroutine = StartCoroutine(LoadSequenceOnNextFrame());
 	}
 
-	private void NeutralHit(SynapseLocation synapseLocation)
+  private void DisplayOneTimeNegativeHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(7f, 2f, 0.1f, 1f);
+    Synapse synapseObject = this.allSynapses[synapseLocation];
+    float screenSpaceX = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).x;
+    float screenSpaceY = Camera.main.WorldToViewportPoint(synapseObject.gameObject.transform.position).y;
+    StartCoroutine(this.ShockWaveEffect(screenSpaceX, screenSpaceY));
+  }
+
+	private void ProcessNeutralHit(SynapseLocation synapseLocation)
 	{
-		CameraShaker.Instance.ShakeOnce(4f, 1f, 0.3f, 0.3f);
-		this.ScoreNeutralHit();
+    this.ScoreNeutralHit();
 	}
 
-	private void RepetitivePositiveHit(SynapseLocation synapseLocation)
+  private void DisplayNeutralHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(4f, 1f, 0.3f, 0.3f);
+  }
+
+  private void ProcessRepetitivePositiveHit(SynapseLocation synapseLocation)
 	{
-		CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
-		this.ScorePositiveHit();
+    this.ScorePositiveHit();
 	}
+
+  private void DisplayRepetitivePositiveHitEffect(SynapseLocation synapseLocation)
+  {
+    CameraShaker.Instance.ShakeOnce(1f, 2f, 0.1f, 0.1f);
+  }
   #endregion
 
   #region Sequence Load Handling
@@ -349,8 +381,11 @@ public class GameManager : MonoBehaviour
     this.StopAllCoroutines();
     for (int i = 0, count = allSynapses.Count; i < count; i++)
     {
-      allSynapses[(SynapseLocation) i].StopAllCoroutines();
+      Synapse synapse = allSynapses[(SynapseLocation) i];
+      synapse.StopAllCoroutines();
+      synapse.SetSynapseMode(SynapseMode.OneTimeNegative);
     }
+
     gameOverUI.SetActive(true);
   }
   #endregion

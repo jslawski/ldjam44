@@ -11,12 +11,11 @@ public class Timer : MonoBehaviour
   public delegate void TimerEndedHandler();
   public event TimerEndedHandler OnTimerEnded;
 
-  public const float DEFAULT_TIMER_INIT_VALUE_IN_SECONDS = 120.0f;
+  public float TimerValueInSeconds { get; private set; }
+  public bool IsPaused = true;
 
   [SerializeField]
   private Text TimerText;
-  public float TimerValueInSeconds { get; private set; }
-  public bool IsPaused = true;
 
 	void Update ()
   {
@@ -61,12 +60,12 @@ public class Timer : MonoBehaviour
     IsPaused = true;
   }
 
-	public void SetTime(float intervalTimerValueInSeconds = DEFAULT_TIMER_INIT_VALUE_IN_SECONDS)
+	public void SetTime(float intervalTimerValueInSeconds)
 	{
 		TimerValueInSeconds = intervalTimerValueInSeconds;
 	}
 
-  public void Reset(float initialTimerValueInSeconds = DEFAULT_TIMER_INIT_VALUE_IN_SECONDS)
+  public void StartTimer(float initialTimerValueInSeconds)
   {
     TimerValueInSeconds = initialTimerValueInSeconds;
     IsPaused = false;
