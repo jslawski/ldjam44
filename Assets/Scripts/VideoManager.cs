@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Video;
 
@@ -10,6 +8,8 @@ public class VideoManager : MonoBehaviour {
   private VideoPlayer player;
   [SerializeField]
   private string videoName; //Include Extension
+  [SerializeField]
+  private string sceneToLoadOnVideoLoopPointReached = string.Empty;
 
 	void Awake() {
     player.url = System.IO.Path.Combine(Application.streamingAssetsPath, this.videoName);
@@ -26,6 +26,11 @@ public class VideoManager : MonoBehaviour {
 
   private void LoadGameScene(VideoPlayer source)
   {
-    SceneManager.LoadScene("main");
+    if (sceneToLoadOnVideoLoopPointReached == string.Empty)
+    {
+      return;
+    }
+
+    SceneManager.LoadScene(sceneToLoadOnVideoLoopPointReached);
   }
 }

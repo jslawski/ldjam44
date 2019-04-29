@@ -451,6 +451,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 1763092969}
   videoName: GrannyKillClips.mp4
+  sceneToLoadOnVideoLoopPointReached: TutorialScene
 --- !u!328 &1763092969
 VideoPlayer:
   m_ObjectHideFlags: 0
