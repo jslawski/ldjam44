@@ -54,7 +54,6 @@ public class SynapseIlluminator : MonoBehaviour
         PositiveParticleEffect.Play();
         break;
       case SynapseMode.Neutral:
-        // TODO: Add any touch effects we want.
         break;
     }
   }
