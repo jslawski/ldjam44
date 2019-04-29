@@ -38,14 +38,14 @@ public class GameManager : MonoBehaviour
   /// This game object contains the countdown text and the get ready text,
   /// so we can disable it to disable both.
   /// </summary>
-  [SerializeField]
-  private GameObject getReadyUI;
+  //[SerializeField]
+  //private GameObject getReadyUI;
   /// <summary>
   /// Will tick down every second to give the user some time to prepare
   /// before the game starts.
   /// </summary>
   [SerializeField]
-  private Text CountdownText;
+  private Image CountdownImage;
 	[SerializeField]
 	private Text scoreText;
 	private long scoreValue = 0;
@@ -135,15 +135,15 @@ public class GameManager : MonoBehaviour
   private IEnumerator StartCountdownToGameStart()
   {
     int counter = 3; // 3 second coundown
-    CountdownText.text = counter.ToString();
-    getReadyUI.SetActive(true);
+    CountdownImage.sprite = Resources.Load<Sprite>("Icon" + counter);
+    CountdownImage.gameObject.SetActive(true);
     while (counter > 0)
     {
-      CountdownText.text = counter.ToString();
+      CountdownImage.sprite = Resources.Load<Sprite>("Icon" + counter);
       yield return new WaitForSeconds(1.0f);
       counter--;
     }
-    getReadyUI.SetActive(false);
+    CountdownImage.gameObject.SetActive(false);
     StartGame();
   }
 
