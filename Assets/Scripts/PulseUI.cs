@@ -8,7 +8,7 @@ public class PulseUI : MonoBehaviour {
   [SerializeField]
   private Image uiImage;
 
-  private float fadeSpeed = 3f;
+  private float fadeSpeed = 2f;
 
 	// Use this for initialization
 	void Start () {
@@ -20,13 +20,17 @@ public class PulseUI : MonoBehaviour {
   {
     float alphaValue = 1.0f;
 
+    float finalValue = Mathf.Sin(alphaValue);
+
     while (true)
     {
-      if (alphaValue < 0)
+      finalValue = Mathf.Sin(alphaValue);
+
+      if (finalValue < 0)
       {
-        alphaValue = -alphaValue;
+        finalValue = -finalValue;
       }
-      this.uiImage.color = new Color(this.uiImage.color.r, this.uiImage.color.b, this.uiImage.color.g, Mathf.Sin(alphaValue));
+      this.uiImage.color = new Color(this.uiImage.color.r, this.uiImage.color.b, this.uiImage.color.g, finalValue);
       alphaValue += Time.deltaTime * fadeSpeed;
       yield return null;
     }
