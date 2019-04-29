@@ -10,6 +10,8 @@ public class SynapseIlluminator : MonoBehaviour
   private ParticleSystem NegativeParticleEffect;
   [SerializeField]
   private ParticleSystem ElectricParticleEffect;
+  [SerializeField]
+  private ParticleSystem AuraParticleEffect;
 
   public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
@@ -38,6 +40,7 @@ public class SynapseIlluminator : MonoBehaviour
     }
 
     this.TurnOnElectricParticles(newSynapseMode);
+    this.ToggleAuraParticleEffect(newSynapseMode);
   }
 
   public void OnSynapseTouched(SynapseMode touchedSynapseMode)
@@ -92,6 +95,36 @@ public class SynapseIlluminator : MonoBehaviour
     ParticleSystem.ColorOverLifetimeModule particleColor = this.ElectricParticleEffect.colorOverLifetime;
     particleColor.color = newGradient;
     this.ElectricParticleEffect.Play();
+  }
+
+  private void ToggleAuraParticleEffect(SynapseMode newSynapseMode)
+  {
+    Color newColor = Color.white;
+
+    switch (newSynapseMode)
+    {
+      case SynapseMode.OneTimePositive:
+        newColor = new Color32(0x0A, 0x52, 0x73, 0xFF);
+        break;
+      case SynapseMode.OneTimeNegative:
+        newColor = new Color32(0xAD, 0x3A, 0x3A, 0xFF);
+        break;
+      case SynapseMode.RepetitivePositive:
+        newColor = new Color32(0x00, 0x22, 0xFF, 0xFF);
+        break;
+      case SynapseMode.Neutral:
+        this.AuraParticleEffect.Stop();
+        return;
+      case SynapseMode.RepetitivePositiveTutorial:
+        newColor = new Color32(0x00, 0x22, 0xFF, 0xFF);
+        break;
+    }
+
+    //ParticleSystem.startcol particleColor = this.AuraParticleEffect.colorOverLifetime;
+    //particleColor.color = newGradient;
+    ParticleSystem.MainModule mainParticle = this.AuraParticleEffect.main;
+    mainParticle.startColor = newColor;
+    this.AuraParticleEffect.Play();
   }
 
   private IEnumerator BlinkSynapse()
