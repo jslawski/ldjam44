@@ -13,6 +13,13 @@ public class SynapseIlluminator : MonoBehaviour
   [SerializeField]
   private ParticleSystem AuraParticleEffect;
 
+  private AudioSource audioPlayer;
+
+  private void Awake()
+  {
+    this.audioPlayer = GetComponentInParent<AudioSource>();
+  }
+
   public void OnSynapseModeChanged(SynapseMode newSynapseMode)
   {
     StopAllCoroutines();
@@ -59,6 +66,9 @@ public class SynapseIlluminator : MonoBehaviour
       case SynapseMode.Neutral:
         break;
     }
+
+    this.audioPlayer.pitch = GameManager.GetRandomPitch();
+    this.audioPlayer.Play();
   }
 
   private void TurnOnElectricParticles(SynapseMode newSynapseMode)

@@ -9,7 +9,7 @@ public class TutorialManager : MonoBehaviour {
   public static TutorialManager instance;
 
   public Dictionary<SynapseLocation, Synapse> allSynapses;
-  private const float DEFAULT_WAIT_DURATION = 5f;
+  private const float DEFAULT_WAIT_DURATION = 3f;
 
   [SerializeField]
   private Material shockWaveMaterial;
@@ -20,8 +20,12 @@ public class TutorialManager : MonoBehaviour {
   public bool flashingSynapseHit = false;
   public bool tutorialComplete = false;
 
+  private AudioSource[] tutorialAudio;
+
   void Awake()
   {
+    this.tutorialAudio = GetComponentsInParent<AudioSource>();
+
     instance = this;
 
     this.allSynapses = new Dictionary<SynapseLocation, Synapse>();
@@ -44,14 +48,15 @@ public class TutorialManager : MonoBehaviour {
     NeedleController.onSynapseHit -= this.SynapseHit;
     NeedleController.onSynapseHit += this.SynapseHit;
 
-
-    StartCoroutine(InitialWait());
+    this.tutorialAudio[0].Play();
+    StartCoroutine(TutorialWait(DEFAULT_WAIT_DURATION, "GreenTutorial"));
   }
 
-  private IEnumerator InitialWait()
+  private IEnumerator EmptyWait()
   {
+    this.tutorialAudio[1].Play();
     yield return new WaitForSeconds(DEFAULT_WAIT_DURATION);
-    StartCoroutine(TutorialWait(DEFAULT_WAIT_DURATION, "GreenTutorial"));
+    StartCoroutine(TutorialWait(DEFAULT_WAIT_DURATION, "FlashingTutorial"));
   }
 
   private IEnumerator TutorialWait(float duration, string nextCoroutine)
@@ -72,6 +77,7 @@ public class TutorialManager : MonoBehaviour {
       case "FlashingTutorial":
         this.allSynapses[SynapseLocation.LeftRight].SetSynapseMode(SynapseMode.RepetitivePositiveTutorial);
         this.allSynapses[SynapseLocation.RightLeft].SetSynapseMode(SynapseMode.RepetitivePositiveTutorial);
+        this.tutorialAudio[2].Play();
         break;
     }
 
@@ -91,7 +97,7 @@ public class TutorialManager : MonoBehaviour {
       yield return null;
     }
 
-    StartCoroutine(TutorialWait(DEFAULT_WAIT_DURATION, "RedTutorial"));
+    StartCoroutine(TutorialWait(0.0f, "RedTutorial"));
   }
 
   private IEnumerator RedTutorial()
@@ -101,7 +107,7 @@ public class TutorialManager : MonoBehaviour {
       yield return null;
     }
 
-    StartCoroutine(TutorialWait(DEFAULT_WAIT_DURATION, "FlashingTutorial"));
+    StartCoroutine(EmptyWait());
   }
 
   private IEnumerator FlashingTutorial()
@@ -119,6 +125,11 @@ public class TutorialManager : MonoBehaviour {
 
   private IEnumerator FinishTutorial()
   {
+    foreach (AudioSource speech in this.tutorialAudio)
+    {
+      speech.Stop();
+    }
+
     NeedleController.onSynapseHit -= this.SynapseHit;
     Destroy(GameObject.Find("TutorialSynapses"));
     SceneManager.LoadScene("main");
@@ -130,21 +141,26 @@ public class TutorialManager : MonoBehaviour {
     switch (this.allSynapses[hitSynapse].Mode)
     {
       case SynapseMode.OneTimePositive:
+        this.tutorialAudio[3].Play();
         this.OneTimePositiveHit(hitSynapse);
         break;
       case SynapseMode.OneTimeNegative:
+        this.tutorialAudio[4].Play();
         this.OneTimeNegativeHit(hitSynapse);
         break;
       case SynapseMode.Neutral:
         this.NeutralHit(hitSynapse);
         break;
       case SynapseMode.RepetitivePositiveTutorial:
+        this.tutorialAudio[3].Play();
         this.RepetitivePositiveHit(hitSynapse);
         break;
       default:
         Debug.LogError("GameManager.SynapseHit: Unknown synapse mode");
         break;
     }
+
+    this.allSynapses[hitSynapse].HitSynapse();
   }
 
   private void OneTimePositiveHit(SynapseLocation synapseLocation)

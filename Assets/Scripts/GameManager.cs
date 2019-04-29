@@ -55,6 +55,11 @@ public class GameManager : MonoBehaviour
 	[SerializeField]
 	private Material shockWaveMaterial;
 
+  private AudioSource goodGrannySound;
+  private AudioSource badGrannySound;
+  private AudioSource goodHitSound;
+  private AudioSource badHitSound;
+
   #region Unity Game Loop
   void Awake()
 	{
@@ -73,6 +78,12 @@ public class GameManager : MonoBehaviour
 		NeedleController.onSynapseHit += this.SynapseHit;
     gameTimer.OnTimerEnded -= this.OnTimerEnded;
     gameTimer.OnTimerEnded += this.OnTimerEnded;
+
+    AudioSource[] audioSources = GetComponentsInParent<AudioSource>();
+    this.goodGrannySound = audioSources[0];
+    this.badGrannySound = audioSources[1];
+    this.goodHitSound = audioSources[2];
+    this.badHitSound = audioSources[3];
 
     ReadyGame();
 	}
@@ -183,18 +194,34 @@ public class GameManager : MonoBehaviour
 	{
 		this.scoreValue += (long) (GameManager.SCORE_INCREMENT_VALUE * this.comboValue);
 		this.comboValue++;
+
+    if (this.comboValue % 50 == 0)
+    {
+      this.goodGrannySound.Play();
+    }
 	}
 
 	private void ScoreNegativeHit()
 	{
     gameTimer.ReduceTimerBy(NegativeHitTimerPenaltyInSeconds);
     this.scoreValue -= (this.scoreValue / GameManager.SCORE_DECREMENT_DIVISOR);
+
+    if (this.comboValue > 50)
+    {
+      this.badGrannySound.Play();
+    }
+
 		this.comboValue = 0;
 	}
 
 	private void ScoreNeutralHit()
 	{
-		this.comboValue = 0;
+    if (this.comboValue > 50)
+    {
+      this.badGrannySound.Play();
+    }
+
+    this.comboValue = 0;
 	}
 	#endregion
 
@@ -275,6 +302,8 @@ public class GameManager : MonoBehaviour
 
 	private void ProcessOneTimePositiveHit(SynapseLocation synapseLocation)
 	{
+    this.goodHitSound.Play();
+
     this.ScorePositiveHit();
     this.allSynapses[synapseLocation].SetSynapseMode(SynapseMode.Neutral);
 
@@ -297,7 +326,9 @@ public class GameManager : MonoBehaviour
 
   private void ProcessOneTimeNegativeHit(SynapseLocation synapseLocation)
 	{
-		this.consecutiveClearedSequences = 0;
+    this.badHitSound.Play();
+
+    this.consecutiveClearedSequences = 0;
     this.ScoreNegativeHit();
     if (this.runningSequenceCoroutine != null) { StopCoroutine(this.runningSequenceCoroutine); }
     if (this.currentLoadNextSequenceCoroutine != null) { StopCoroutine(this.currentLoadNextSequenceCoroutine); }
@@ -325,6 +356,7 @@ public class GameManager : MonoBehaviour
 
   private void ProcessRepetitivePositiveHit(SynapseLocation synapseLocation)
 	{
+    this.goodHitSound.Play();
     this.ScorePositiveHit();
 	}
 
@@ -389,4 +421,9 @@ public class GameManager : MonoBehaviour
     gameOverUI.SetActive(true);
   }
   #endregion
+
+  public static float GetRandomPitch()
+  {
+    return Random.Range(0.5f, 1.5f);
+  }
 }
