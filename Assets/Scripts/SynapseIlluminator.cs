@@ -55,7 +55,6 @@ public class SynapseIlluminator : MonoBehaviour
         break;
       case SynapseMode.Neutral:
         // TODO: Add any touch effects we want.
-        ElectricParticleEffect.Stop();
         break;
     }
   }
@@ -82,8 +81,8 @@ public class SynapseIlluminator : MonoBehaviour
           new GradientAlphaKey[] { new GradientAlphaKey(1.0f, 0.0f), new GradientAlphaKey(1.0f, 1.0f) });
         break;
       case SynapseMode.Neutral:
+        this.ElectricParticleEffect.Stop();
         return;
-        break;
       case SynapseMode.RepetitivePositiveTutorial:
         newGradient.SetKeys(new GradientColorKey[] { new GradientColorKey(new Color32(0xFF, 0xFF, 0xFF, 0xFF), 0.0f),
           new GradientColorKey(new Color32(0x00, 0xB8, 0xE2, 0xFF), 1.0f) },

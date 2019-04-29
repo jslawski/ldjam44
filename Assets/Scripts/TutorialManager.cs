@@ -111,6 +111,9 @@ public class TutorialManager : MonoBehaviour {
       yield return null;
     }
 
+    this.allSynapses[SynapseLocation.LeftRight].SetSynapseMode(SynapseMode.Neutral);
+    this.allSynapses[SynapseLocation.RightLeft].SetSynapseMode(SynapseMode.Neutral);
+
     StartCoroutine(TutorialWait(DEFAULT_WAIT_DURATION, "FinishTutorial"));
   }
 

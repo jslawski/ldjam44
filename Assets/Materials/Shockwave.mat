@@ -56,8 +56,8 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Floats:
     - _BumpScale: 1
-    - _CenterX: 0.5742029
-    - _CenterY: 0.3973591
+    - _CenterX: 0.9492456
+    - _CenterY: 0.47574168
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DisplacementAmount: 1
@@ -71,7 +71,7 @@ Material:
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
-    - _Radius: 2
+    - _Radius: -0.2
     - _SizeX: 1
     - _SizeY: 1
     - _SmoothnessTextureChannel: 0
