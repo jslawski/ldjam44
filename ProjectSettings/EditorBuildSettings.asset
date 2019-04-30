@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/main.unity
     guid: af11d2f3c2cef8b4c9e9db648d42f197
+  - enabled: 1
+    path: Assets/Scenes/WebGLWarningScreen.unity
+    guid: 8206620b093e816458f4873742a59a40
   m_configObjects: {}
