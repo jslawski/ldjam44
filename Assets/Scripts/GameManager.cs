@@ -132,17 +132,16 @@ public class GameManager : MonoBehaviour
     StartCoroutine(StartCountdownToGameStart());
   }
 
+  // Counts down for 3 seconds before game starts.
   private IEnumerator StartCountdownToGameStart()
   {
-    int counter = 3; // 3 second coundown
-    CountdownImage.sprite = Resources.Load<Sprite>("Icon" + counter);
+    CountdownImage.sprite = Resources.Load<Sprite>("Icon3");
     CountdownImage.gameObject.SetActive(true);
-    while (counter > 0)
-    {
-      CountdownImage.sprite = Resources.Load<Sprite>("Icon" + counter);
-      yield return new WaitForSeconds(1.0f);
-      counter--;
-    }
+    yield return new WaitForSeconds(1.0f);
+    CountdownImage.sprite = Resources.Load<Sprite>("Icon2");
+    yield return new WaitForSeconds(1.0f);
+    CountdownImage.sprite = Resources.Load<Sprite>("Icon1");
+    yield return new WaitForSeconds(1.0f);
     CountdownImage.gameObject.SetActive(false);
     StartGame();
   }
