@@ -24638,6 +24638,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 1671489861}
   ElectricParticleEffect: {fileID: 460262836}
   AuraParticleEffect: {fileID: 734517568}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1 &754201172
 GameObject:
   m_ObjectHideFlags: 0
@@ -29514,6 +29518,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 1823621788}
   ElectricParticleEffect: {fileID: 888373742}
   AuraParticleEffect: {fileID: 1997708607}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1001 &888373741
 Prefab:
   m_ObjectHideFlags: 0
@@ -39029,6 +39037,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 2000714004}
   ElectricParticleEffect: {fileID: 2125982119}
   AuraParticleEffect: {fileID: 425238345}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1001 &1053197331
 Prefab:
   m_ObjectHideFlags: 0
@@ -48744,6 +48756,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 764472995}
   ElectricParticleEffect: {fileID: 66211886}
   AuraParticleEffect: {fileID: 1571461355}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1 &1339778532
 GameObject:
   m_ObjectHideFlags: 0
@@ -48955,6 +48971,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 1878091796}
   ElectricParticleEffect: {fileID: 1549306809}
   AuraParticleEffect: {fileID: 923926700}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1 &1459815709
 GameObject:
   m_ObjectHideFlags: 0
@@ -53848,6 +53868,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 353341931}
   ElectricParticleEffect: {fileID: 1522247120}
   AuraParticleEffect: {fileID: 1496436159}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1001 &1549306808
 Prefab:
   m_ObjectHideFlags: 0
@@ -58628,6 +58652,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 1090367467}
   ElectricParticleEffect: {fileID: 486364735}
   AuraParticleEffect: {fileID: 856166039}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1 &1650937424
 GameObject:
   m_ObjectHideFlags: 0
@@ -73132,6 +73160,10 @@ MonoBehaviour:
   NegativeParticleEffect: {fileID: 983791490}
   ElectricParticleEffect: {fileID: 1120498477}
   AuraParticleEffect: {fileID: 2093788613}
+  BlueSynapse: {fileID: 2100000, guid: cac3e0127a244f9459aa3b251ef32f3a, type: 2}
+  RedSynapse: {fileID: 2100000, guid: ed9414e1bdbd8b3418ce493ba469266b, type: 2}
+  NeutralSynapse: {fileID: 2100000, guid: f012b1fe3325ccf4a9a02185c4dceb33, type: 2}
+  BlinkingOnSynapse: {fileID: 2100000, guid: 127836828b8f4544195bde14dcb30691, type: 2}
 --- !u!1 &1959390504
 GameObject:
   m_ObjectHideFlags: 0

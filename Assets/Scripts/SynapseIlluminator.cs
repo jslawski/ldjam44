@@ -12,7 +12,14 @@ public class SynapseIlluminator : MonoBehaviour
   private ParticleSystem ElectricParticleEffect;
   [SerializeField]
   private ParticleSystem AuraParticleEffect;
-
+  [SerializeField]
+  private Material BlueSynapse;
+  [SerializeField]
+  private Material RedSynapse;
+  [SerializeField]
+  private Material NeutralSynapse;
+  [SerializeField]
+  private Material BlinkingOnSynapse;
   private AudioSource audioPlayer;
 
   private void Awake()
@@ -30,16 +37,16 @@ public class SynapseIlluminator : MonoBehaviour
     switch (newSynapseMode)
     {
       case SynapseMode.OneTimePositive:
-        renderer.material = Resources.Load<Material>("BlueSynapse");
+        renderer.material = BlueSynapse;//Resources.Load<Material>("BlueSynapse");
         break;
       case SynapseMode.OneTimeNegative:
-        renderer.material = Resources.Load<Material>("RedSynapse");
+        renderer.material = RedSynapse;//Resources.Load<Material>("RedSynapse");
         break;
       case SynapseMode.RepetitivePositive:
         StartCoroutine(this.BlinkSynapse());
         break;
       case SynapseMode.Neutral:
-        renderer.material = Resources.Load<Material>("SynapseBase");
+        renderer.material = NeutralSynapse;//Resources.Load<Material>("SynapseBase");
         break;
       case SynapseMode.RepetitivePositiveTutorial:
         StartCoroutine(this.BlinkSynapseTutorial());
@@ -145,9 +152,9 @@ public class SynapseIlluminator : MonoBehaviour
     {
       offDuration = ((GameManager.instance.currentSequence.sequenceDurationInSeconds - i) / 10.0f);
 
-      renderer.material = Resources.Load<Material>("BlinkingSynapse");
+      renderer.material = BlinkingOnSynapse;//Resources.Load<Material>("BlinkingSynapse");
       yield return new WaitForSeconds(this.flashOnDurationInSeconds);
-      renderer.material = Resources.Load<Material>("SynapseBase");
+      renderer.material = NeutralSynapse; //Resources.Load<Material>("SynapseBase");
       yield return new WaitForSeconds(offDuration);
     }
 
@@ -163,7 +170,7 @@ public class SynapseIlluminator : MonoBehaviour
     {
       offDuration = totalDuration / 10f;
 
-      renderer.material = Resources.Load<Material>("BlinkingSynapse");
+      renderer.material = BlinkingOnSynapse;//Resources.Load<Material>("BlinkingSynapse");
       yield return new WaitForSeconds(this.flashOnDurationInSeconds);
 
       if (TutorialManager.instance.flashingSynapseHit == true)
@@ -171,7 +178,7 @@ public class SynapseIlluminator : MonoBehaviour
         break;
       }
 
-      renderer.material = Resources.Load<Material>("SynapseBase");
+      renderer.material = NeutralSynapse; //Resources.Load<Material>("SynapseBase");
       yield return new WaitForSeconds(offDuration);
 
       if (TutorialManager.instance.flashingSynapseHit == true)
@@ -184,9 +191,9 @@ public class SynapseIlluminator : MonoBehaviour
     {
       offDuration = ((totalDuration - i) / 10.0f);
 
-      renderer.material = Resources.Load<Material>("BlinkingSynapse");
+      renderer.material = BlinkingOnSynapse;//Resources.Load<Material>("BlinkingSynapse");
       yield return new WaitForSeconds(this.flashOnDurationInSeconds);
-      renderer.material = Resources.Load<Material>("SynapseBase");
+      renderer.material = NeutralSynapse; //Resources.Load<Material>("SynapseBase");
       yield return new WaitForSeconds(offDuration);
     }
 
